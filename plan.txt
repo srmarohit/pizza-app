@@ -1,0 +1,6 @@
+[-] Initialize a Project with npm init
+[-] create directory structure to separate all files related to thier job.
+[-] install dependencies npm i ejs express express-ejs-layouts 
+[-] install nodemon in devDependencies npm i nodemon -D 
+[-] create a main file server.js to the root folder.
+[-] set script tag inside of package.json like "dev" : "nodemon server.js" and "start" :"node server.js"
