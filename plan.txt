@@ -3,4 +3,65 @@
 [-] install dependencies npm i ejs express express-ejs-layouts 
 [-] install nodemon in devDependencies npm i nodemon -D 
 [-] create a main file server.js to the root folder.
+[-] setting up all template engine related setting.
+
+<-----Important----->
+[-] place routes method above or before of all template engine and middlewares realted code .
+[-] Its only for temporary when your create a boilerplate page will see later then you would pace this routes method after all middleware code.
+
 [-] set script tag inside of package.json like "dev" : "nodemon server.js" and "start" :"node server.js"
+[-] variable creation file into scss folder name _variable.scss 
+[-] include all css file from public folder into index.ejs and include script file app.js into end of body tag from public folder .
+[-] now most thing to use public folder as a public assets that we need to use middleware and take arguments express.static('public') .
+[-] design index.ejs file .
+
+[-] Design cart.js file 
+[-] create cart.ejs into views/customers  folder.
+[-] create route for rendering cart page.
+
+[-] Create layout page to prevent of using repeatation of header and footer to each pages.
+[-] create layout.ejs file inside views folder
+[-] paste all code having nav menubar footer.
+
+<----- Important ------>
+[-] write code <%- body %> into layout.ejs file.
+[-] place all routes method after the app.use() middleware and template engine set method.
+
+[-] create cart section that has two div 1) order 2)empty-cart
+[-] order -> form submit button should be inside div otherwise it align with input element.
+[-] Actually button element bydefault set as block but we set as inline-block to place into next line
+[-] create anchor tag for click to login if user not logged in and here your submit button not visible.
+[-]Remember <a> tag bydefault inline . so to provide padding and margin you need to first set it as inline-block to <a>
+
+[-] create empty-cart
+[-] give image width w-1/2 and set margin mx-auto for place img to center.
+
+[-] create login-register page has placed inside of resources/auth folder.
+[-] paste login form into login.ejs from tailwind .
+[-] again paste this login form to register.ejs and add some input tag more.
+[-] create routes get method for auth page login and register.
+[-] update git and commit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+<------------------ Record -------------------->
+[-] explain server.js and why we call routes before use middleware.
+[-] install git and use git to this application.
+[-] add all file except config folder and node_modules folder that is keep into .gitignore file.
+[-] variable creation file into scss folder name _variable.scss 
+[-] import font lato from google font into app.scss 
+[-] include all css file from public folder into index.ejs and include script file app.js into end of body tag from public folder .
+[-] now most thing to use public folder as a public assets that we need to use middleware and take arguments express.static('public') .
+[-] design index.ejs file .
+
+<------------------ Record -------------------->

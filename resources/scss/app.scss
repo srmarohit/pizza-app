@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
+@import './variable' ; // you can write name 'variable' instead of _variable and no need put extension over here.
+
+
+body{
+    font-family: 'Lato', sans-serif; // we use two font if google font "Lato" may not work then sans-serif apply bydefault.
+    -webkit-font-smoothing : antialiased ; // this prperty use while using Google lato font-family.
+    color: $dark;
+}
+
+// Design Utilities
+
+.btn-primary{
+    transition: $smooth;
+    background: $primary;
+    &:hover{
+        background: $primary-hover;
+    }
+}
+
+// Design Nav
+
+nav li:last-child a{
+    transition: $smooth;
+    background: $primary;
+    &:hover{
+        background: $primary-hover;
+    }
+}
+
+nav li a{
+    &:hover{
+        color:$primary;
+    }
+}
+
+
+// Design Hero Section
+
+section.hero{
+    background: $secondary;
+}
+
+
+
+
+// Design Menu Section
+.size{
+    background: $secondary;
+}
+
+.add-to-cart{
+    border:2px solid $primary;
+    color : $primary;
+    transition: $smooth;
+    &:hover{
+        background: $primary;
+        border-color: $pure;
+        color:$pure;
+    }
+}
+
+//Design empty-cart section
+
+section.cart{
+    background: $secondary;
+    
+    .amount{
+        color: $primary;
+    }
+}
+
+
+// Design Login Page
+section.login{
+    background: $secondary;
+    // min-height : 100vh  ;  but here it takes whole displaay page height and add height to the navbar height that make it scrolled page.
+    min-height: calc(100vh - 86px); // thatswhy using calc() to reduced nav height to total viewport height
+
+    a{
+        color:$primary;
+        &:hover{
+            color: $primary-hover;
+        }
+    }
+}

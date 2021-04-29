@@ -1,0 +1,80 @@
+<section class="cart py-16">
+
+    <!-- Order cart -->
+    <div class="order container mx-auto w-1/2">
+        <div class="flex items-center border-b border-gray-300 pb-4">
+            <img src="/img/cart-black.png" alt="cart">
+            <h1 class="font-bold ml-4 text-2xl">Order Summary</h1>
+        </div>
+
+        <div class="pizza-list">
+            <div class="flex items-center my-8">
+                <img class="w-24" src="/img/pizza.png" alt="product">
+                <div class=" flex-1 ml-4">
+                    <h1>Marinara</h1>
+                    <span>MEDIUM</span>
+                </div>
+                <span class="flex-1">1 Pcs</span>
+                <span class="font-bold text-lg">$300</span>
+            </div>
+
+            <div class="flex items-center my-8">
+                <img class="w-24" src="/img/pizza.png" alt="product">
+                <div class=" flex-1 ml-4">
+                    <h1>Marinara</h1>
+                    <span>MEDIUM</span>
+                </div>
+                <span class="flex-1">1 Pcs</span>
+                <span class="font-bold text-lg">$300</span>
+            </div>
+
+            <div class="flex items-center my-8">
+                <img class="w-24" src="/img/pizza.png" alt="product">
+                <div class=" flex-1 ml-4">
+                    <h1>Marinara</h1>
+                    <span>MEDIUM</span>
+                </div>
+                <span class="flex-1">1 Pcs</span>
+                <span class="font-bold text-lg">$300</span>
+            </div>
+        </div>
+        <hr/>
+
+        <div class="text-right py-4">
+            <div>
+                <span class="text-lg font-bold">Total Amount : </span>
+                <span class="amount text-2xl font-bold ml-2">$300</span>
+            </div>
+            <div class="mt-12">
+                <form action="">
+                    <input class="border rounded border-gray-400 p-2 my-2 w-1/2" type="text" placeholder="Enter Phone no.">
+                    <input class="border rounded border-gray-400 p-2 w-1/2" type="text" placeholder="Enter Address">
+                    <div> <!-- button element is a block element thatwhy we wrap button into div -->
+                        <button class="btn-primary px-6 py-2 mt-4 rounded-full font-bold text-white" type="submit">Order Now</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- if User not login -->
+            <a href="#" class=" inline-block btn-primary px-6 py-2 mt-4 rounded-full font-bold text-white">Login to continue</a>
+
+        </div>
+
+
+    </div> <!-- Ends Order Cart -->
+
+    <!-- Empty Cart -->
+    <div class="empty-cart py-16">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl font-bold mb-2">Cart Empty :)</h1>
+            <p class="text-gray-500 text-lg mb-12">
+                You probably haven't Pizza yert.<br>
+                To order a Pizza, go to the main page
+            </p>
+            <img class="w-2/5 mx-auto" src="/img/empty-cart.png" alt="empty-cart">
+            <!-- If you want to provide padding to <a> tag first you change the style propert inline to inline-block -->
+            <a href="/" class="inline-block mt-12 px-6 py-2 rounded-full text-white font-bold btn-primary">Go back</a>
+        </div>  
+    </div><!-- Ends Empty Cart-->
+
+</section>
