@@ -1,3 +1,7 @@
+/** run mongo 
+/Software/mongo/mongo/mongodb/bin/mongod.exe  --dbpath=/Software/mongo/mongo/mongodb-data
+*/
+
 [-] Initialize a Project with npm init
 [-] create directory structure to separate all files related to thier job.
 [-] install dependencies npm i ejs express express-ejs-layouts 
@@ -42,14 +46,310 @@
 [-] create routes get method for auth page login and register.
 [-] update git and commit.
 
+/* REcord-03 */
+<---------- Separate all Route code into Route/web folder -------->
+[-] create a file web.js 
+[-] create a function initRoute and place all route code iinside of that.
+[-] passing parameter 'app' to initRoute function becoz our route method is a method of app express object.
+[-] export initRoute and import this method into server.js file.
+[-] after importing call that method..! simple.
+
+
+<-------- use Controller to define an action of routes -------------->
+
+[-] create a file homeController.js 
+[-] create a factory function homeController that returns an object.
+[-] returning object has a property their value is a callback fnction of respective routes.
+[-] exporting function and importing in web.js and place this module function inside of routes method instead of callback function.
+[-] actually homeController is an function so write the code in routes method like this
+     app.get('/' , homeController().index) // where index is a property has a callback fun of this routes.   
+
+[-] Similar doing for authController that return two propert register and login routes callback function.
+[-] create cartController that returns cart routes callback function.
+/* End of Record */
+
+
+/** Record-04 */
+<-------------- MongoDB -------->
+[-] first create new database 'pizza' with collection 'menus' in local mongodb.
+[-] notes : collection name always must be in a "small letter".
+[-] import a pizza.json file into menus collection.
+[-] install mongoose npm and importing in server.js
+[-] set url = mongodb:localhost/pizza
+[-] call mongoose.connect(url,{urlParser:true, unifiedTopology:true})
+[-] create models menu.js inside model folder of app .
+[-] in menu.js create Schema of pizza that is given in collection such as name, image, price, size .
+[-] come to homeController and put the code to mongodb find() to get all pizza item.
+[-] collection menus has image attribute that takes only name of image .
+[-] and the all images stored in a public/img folder . use image name like src="/img/<%= pizza.image %>"
+[-] finally we have created dynamic menu items.
+
+/* Ends Record-04 */
+
+
+/* Record-05 */
+
+<------- express-session --------->
+[-] create session to store cart related items.
+[-] what is session ?
+      * first time you req to server .
+      * it checks for cookie in req.header .
+      * session does not work without cookie.
+      * and if it not found in req.header server create new cookie.
+      * send this cookie with res to user.
+      * user takes this cookie from res.header and store into browser application seesion storage .
+      * remember - if you close your browser still it persist in your machine mean it doesnt destroy.
+      * when again user new req to server .
+      * then again server checks a cookie in req.header.
+      * and this it got cookie and send all realated session history mean cart items etc. to the user back.
+
+[-] set and  config with app.use(session({}))
+[-] takes config property secret, resave, unInitialised, cookie
+[-] cookie : {maxAge : 1000*60*60*24}
+
+[-] session Storage into server.
+    * server store session data bydefault into a Ram of server.
+    * servar has a lots of option to store session or cookie data 
+               * Memory (RAM)
+               * file
+               * Redis(in-memory storage)
+               * database
+[-] so here if we go to store session in memory then it may slow our server and app.
+[-] So prevent this we gonna to select mongo DB to store session.
+
+[-] Store session data into mongoDB we need to install 'connect-mongo'
+[-] connect-mongo return a class constructor that reference by MongoDbStore .
+[-] call new MongoDbStore({ ....... takes parameter mongoUrl : '', autoRemove : 'native'}) and its returns a collection sessions refered by  variable "mongoStore"
+[-] come to back session config and set another property  store : mongoStore .
+[-] now if you save the file server.js and see your databse there sessions name collection would be created. 
+
+/* Ends Record-05 */
 
 
 
+/*  Record-06 */
+
+<------- set Add to cart Action ------->
+[-] first set Some Cart configuration with add-to-cart button in index.ejs file .
+[-] set attribute data-pizza = "<%= JSON.stringify(pizza) %>" it takes pizza object coming from a server and store into pizza dataset.
+[-] the reson behind using JSON.strinfy becoz you can only take string data into data-pizza attribute. 
+[-] in app.js of resources folder we querySelectorAll(".add-to-cart") and store return arrray into addCart variable.
+[-] Actually addCart variable is an Array so here we need to iterate first using addCart.forEach().
+[-]Where it return single cart object and apply click eventlistener function and get data from perticular cart button. .
+[-] now store the data pizza fro data-pizza of there adjacent add-to-cart button.
+[-] here we store pizza object from using this code cart.dataset.pizza .
+[-] but it returns stringify pizza object . So we do it prase into JSON object and store it pizza ariable.
+[-] now here we call another function updateCart(pizza) with passing pizza object.
+
+[-] define updateCart function.
+[-] this cart basicaly does request to the server with axios.
+[-] install and import axios and then call post method with this routes "/update-cart" and pass pizza object.
+[-] then we may get a success response run then() otherwise error runs catch().
+[-] if we get success response and we are trying to print res result into console. We get undefind.
+[-]Actually the reson behing to get undefind is we are not apply a middleware of jsonparser.
+[-] so we must apply middleware app.use(express.json()). then we get result into console .
+
+[-] However we are not defining "/update-cart" into routes/web.js and app/controller/cartController.js file .
+[-] first define routes app.post('/update-route', cartController().update)
+[-] now come to the cartController file and set an another propert update to cartController() function.
+[-] this update property has an function that runs on you req post method /update-cart.
+
+[-] So what exactly update property does ?
+[-] Basically here we want to store cart related info into session collectio of database.
+[-] so we have not any cart structure object yet.
+[-] first check if any cart object available or not into session collection.
+[-] if not then we create a structure of cart into session.
+[-] now second time just update the cart into else section of if condition.
+[-] and finally response send a json object of {totalQty : req.session.cart.totalQty}
+
+[-] now next step to take res in the updateCart() in app.js file.
+[-] here we want to display this totalQty into cart icon of index file.
+[-] so first create a span into icon and select that and store totalQty value in it.
+
+[-] cart added notifiction : we install a module noty with npm init noty.
+[-] import noty js file into app.js
+[-] import noty css file from node_modules into app.scss file.
+[-] importing anything from node_modules add ~ to the path that represent node_modules folder.
+[-] import noty css by @import '~noty/src/noty.scss' and a theme file @import '~noty/src/themes/mint.scss' into app.scss file.
+[-] come to app.js file and in updateCart method call new Noty({}) and do configuration of noty into then()and catch().
+[-] And give and do some styling with noty just override some css property like border-radius and padding etc. into app.scss with !important keyword.
 
 
+[-] lets first create a global variable into main server.js file to store all session .
+[-] use middleware app.use({res.locals.session : req.session })  .
+[-] now our all session store into global variable session.
+
+[-] now do iterative cart.js file with pizza item.
+[-] first set if condition that if session.cart object found then show cart section otherwise show empty-cart section.
+[-] in cart section we iterate session.cart.items but unfortunately it is not an array. 
+[-] but we have lota of property and their values in an object of items.
+[-] so here we apply for-of loop for values of sessioni.cart.items by this code for(let pizza of Object.values(session.cart.items))
+[-] and it return a pizza variable has an property item and qty.
+[-] this item takes an object of your pizza info. 
+
+[-] now just call a pizza.item.image or pizza.item.price and many you want to place into cart section using <%= pizza.qty %> for quantity.
+[-] for total price just call session.cart.totalPrice. 
+
+/* Ends Record-06 */
+
+<------------ End add cart section ----->
 
 
+<!------- Registeration part ---------->
+/* Record-07 */
 
+[-] We do some configuration with register.ejs file.
+[-] set attribute action="/register" method="POST" to the form tag.
+[-] set name attrubute to each input of form tag.
+[-] set button type is to submit.
+
+[-]now define post method for '/register' in initRoute() of web.js file in web folder .
+[-] and it takes a callback function comes from authcontroller.js file
+    in which we create another property of authcontroller function is postRegister.
+[-] now lets define an callback function post register route.
+[-] inside postRegister property of authcontroller function referencing a call back function of register route of post method.
+[-] in which first destructuring the req.body or query comes from register page while user registering.
+[-] first print the req.body by console.log(req.body).
+[-] Imp -  but unfortunately we got empty object {}
+[-] Actually they did not able to parse query means req.body.
+[-] Imp - to prevent this problem we need to do one configuration into server.js file.
+[-] IMp- we use middleware app.use(express.urlEncoded({extended : false})).
+[-] now we get the req.body object into console successfuly.  
+
+[-] so here first validate that user fill up all fields or not.
+[-] if not the we use express-flash to show error message.
+[-] express-flash is used to display a message is persist only for one request and after the message flashed.
+[-] using express-flash first install it and import it to the main server.js file.
+[-]now call the function flash inside app.use(flash()) middleware.
+
+[-] now come to postRegister method in which if user does not provide all data then we send a flash error mesage.
+[-] call req.flash('error', ' All fields required') .
+[-] So here we set the message with key 'error' and their value 'All fields reuired'.
+[-] send the response back to user register page by return res.render('register').
+[-] now here we create span tag inside of form which is wrap up with if block has condition message.error is available or not.
+[-] Actually if you set any flash message it store into a message object has property that you provide with req.flash(key,value);
+[-] so now if user does not provide all fields then req.flash('error','All fields required') send back to user with response.
+[-] check condition if(message.error) is available or not . if true then our span tag display over form tag.
+[-] after user again fill all the field  flash message will be destroy. becoz flash message persist only one time.
+[-] let me tell u one thing here if user make mistake then thay get new fresh register page but we want that all data still there if page referesh.
+[-] for that we set another flash meassage for req.flash('name', req.body.name) or req.flash('email',email).
+[-] display over  register page into input tag has value="<%= messages.name %>" and similar for email.
+/* Ends Record - 07 */
+
+<----- Store registeration data into Database ---->
+/* Record-08 */
+
+[-] now store all registration data into database .
+[-] first we create a model file user.js for creating model .
+[-] in user.js file import first mongoose call mongoose.schema return a class is return in ref var Schema .
+[-] initial Schema with new keyword pasing an object to this constructor.
+[-] define schema into constructor object having propert name, email, password and role.
+[-] role is basically a string and set to default : 'customer'.
+[-]provide another object with property {timestamps:true}
+[-]So this constructor is reference to userSchema variable.
+[-] now in the end we exports mongoogse.model('User', userSchema) takes two arguments.
+[-]first one that collection must be first letter capital and be singular and second argument is schema.  
+[-]into postRegister method we write the code for registering user .
+[-]now import User model into authController.js file that return a class store in User variable.
+[-] first check the user email is already exists or not by call User.exists({email}, ()=> {} ).
+[-] if the email already has then render register page with flash error message.
+[-] else  create a new User({email, name, password}).save() ;
+[-] return render  home page.
+
+/* Ends Record-08 */
+
+
+<----- we need to setup PASSPORT first to setup login system  ---->
+/* Record-09 */
+
+[-]first we install passport and passport local by npm i passport passport-local.
+[-]create a seprate file passport.js into app/config folder .
+[-] inside of passport.js we create a function init(passport) that takes a object passport as a parameter of passport module from server.js file.
+[-] export this init function.
+[-] now come to the server.js file and import first passport module and refer by const variable passport.
+[-]now next step to import passport.js file and basically it returns a function init .
+   so call directly along with importing and pass an object passport to the function.
+[-] and note one thing we place passport.js impoerted line should be place after the session segment.
+[-] also place another two line of passport call function with middleware app.use(passport.initialize())
+    and app.use(passport.session()) after the session segment . 
+
+[-]Now lets do main coding inside of init(passport) of passport.js file.
+[-] first import passport-local module and call thier property Strategy like require('passport-local').Strategy 
+    that returns a class or constructor store in a variable LocalStrategy.
+[-] now come to the init function has an parameter passport is and object and call its middleware function passport.use(); 
+[-] initialize a LocalStrategy class with new keyword inside passport.use(new LocalStrategy()).
+[-] and it takes an object as first argument and second is a callback function into this constructor.
+[-] inside of first argument object write set value for property of usernameField i.e email is an our username for an our application.
+[-] now come to second argument is an callback function takes three parameter 
+    in which first two for authentication purpose and third one is an another callback function .
+[-] so here pass variable email as first argument and pass variable password as second argument 
+    and last argument would be our done variable represent as callback.   
+
+[-] now inside of callback function of new LocalStrategy , we do code for authentication of our email and password
+    and return a response with done call back function like done(null, false, {message : ""}).
+[-] in done() callback function first argument is for error found in passport related method .
+[-] second argument is for response comes into as user otherwise set as false.
+[-] Third argument is for message regarding user like if user not found then we send message "username or pasword not match" .
+[-] pass last argument as an object with message property has their value a string.
+
+[-] So lets check first for email.So here we need to import User model .
+[-] after importing we call a method User.findOne({email : email}) return user if found email into db.
+[-] now if user not found then call callback function done(null, false, {error:"Email not found"}) .
+[-] passing false as second argument due to not found user.
+[-] last argument pass an object with key errror .
+
+[-] now if we get user then next step to check password .
+[-] so we have a hashed password into the database. 
+    so first compare this hashed password with variable password come from callback argument.
+[-] before of doing this we need to import bcrypt module.
+[-] call bcrypt.compare(password, user.password).then().catch();
+[-] into then((match)=>{}) method returns match may have true or false.
+[-] now check match if its true , just return done(null, user, {message :"Successfully registered"}).
+[-] where we pass user object as second argument becoz our credential hasbeen matched.
+
+[-] in ohter hand out side the if block simply return done(null, false, {message : "username or password does not matched. "}).
+
+[-] now come to catch block of bcrypt.compare() method just return done(null ,false, {message : "Something went wrong."}).
+
+[-] here we have done our passport.js file.
+
+[-] now come to route of post method login. and 
+it return a callback function with req,res,next argument that is defined in our authController.js file.
+
+[-] So inside of authController() function we define a new propert postLogin represent a callback function of post login route.
+[-] so begin with validation of user login credential about any empty field user if pass.
+[-] then just call req.flash('error','All field required') and return res.redirct('/login')
+[-] inside of that function call passport.authenticate('local', (error, user, info)=>{}) 
+ has first argument is name of strategy set local and other is callback function that come from done() .
+[-] check if(error) then set flash message with req.flash('message', info.message) and return next(error) ;
+[-] if(!user) again set req.flash('message', info.message) and retun res.redirect('/login').
+[-] and if we are getting user then just call req.login(user, (err)=>{}) has first argument user and other is callback with error argument.
+[-] so check if we get error if(error) then set req.flash('error', info.message) and return next(error);
+[-] otherwise return res.redirect('/') home  page.
+
+[-] So we have completed passport.authenticated() code.
+[-] but still we are missing one thing is that actually passport.authenticate() return a function.
+[-] so call that functio attached () paranthesis to passport.authenticate()(req,res,next) and pass req,res,next as argument .
+
+
+[-] now we need to do some changes with login page, so lets come to the page.
+[-] here first we set action and method attribute to the form tag with action="/login" method="POST".
+[-] now set attribute for input tag name and password and set button type to submit.
+
+[-] now main thing we have to do here attached a span tag inside a form tag.
+[-] and wrap this span tag with our scriptlet tag of ejs where we apply a if block with condition messages.error .
+[-] if its true then write again a code messages.error inside scriptlet tag into a span tag.
+[-] finally close if blockafter span tag.
+
+[-] So finally we completed login system code.
+
+/* Record-09 */
+
+
+<------------ Setup Login System ------------------->
+/* Record 10 */
+
+/* Record 10 */
 
 
 

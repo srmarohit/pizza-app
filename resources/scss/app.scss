@@ -2,11 +2,20 @@
 
 @import './variable' ; // you can write name 'variable' instead of _variable and no need put extension over here.
 
+// import noty files from node_modules
+@import '~noty/src/noty.scss'  ; // ~ indicates node_modules folder
+@import '~noty/src/themes/mint.scss' ;
 
 body{
     font-family: 'Lato', sans-serif; // we use two font if google font "Lato" may not work then sans-serif apply bydefault.
     -webkit-font-smoothing : antialiased ; // this prperty use while using Google lato font-family.
     color: $dark;
+}
+
+// design noty notification
+.noty_theme__mint {
+    border-radius : 50px !important ;
+    padding-left: 8px !important;
 }
 
 // Design Utilities
@@ -58,6 +67,9 @@ section.hero{
         background: $primary;
         border-color: $pure;
         color:$pure;
+    }
+    &:focus{
+        outline: none;
     }
 }
 

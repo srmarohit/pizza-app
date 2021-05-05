@@ -1,5 +1,9 @@
 <section class="cart py-16">
 
+
+    <!-- Check any items added to cart -->
+        <% if(session.cart) { %>
+
     <!-- Order cart -->
     <div class="order container mx-auto w-1/2">
         <div class="flex items-center border-b border-gray-300 pb-4">
@@ -8,42 +12,29 @@
         </div>
 
         <div class="pizza-list">
-            <div class="flex items-center my-8">
-                <img class="w-24" src="/img/pizza.png" alt="product">
-                <div class=" flex-1 ml-4">
-                    <h1>Marinara</h1>
-                    <span>MEDIUM</span>
-                </div>
-                <span class="flex-1">1 Pcs</span>
-                <span class="font-bold text-lg">$300</span>
-            </div>
+              <!-- get all pizza from session -->
+              <% for(let pizza of Object.values(session.cart.items) ){ %>
+                 <!--  Actualy our all pizza store as property value in a single object session.cart.items. 
+                       thatwhy we first convert items object into array iterate there value items:{pizza_id : {item : {_id :'', image :""}} }
+                -->
 
-            <div class="flex items-center my-8">
-                <img class="w-24" src="/img/pizza.png" alt="product">
+                  <div class="flex items-center my-8">
+                <img class="w-24" src="/img/<%= pizza.item.image %>" alt="product">
                 <div class=" flex-1 ml-4">
-                    <h1>Marinara</h1>
-                    <span>MEDIUM</span>
+                    <h1><%= pizza.item.name %></h1>
+                    <span><%= pizza.item.size %></span>
                 </div>
-                <span class="flex-1">1 Pcs</span>
-                <span class="font-bold text-lg">$300</span>
+                <span class="flex-1"><%= pizza.qty %> Pcs</span>
+                <span class="font-bold text-lg">$<%= pizza.item.price * pizza.qty  %></span>
             </div>
-
-            <div class="flex items-center my-8">
-                <img class="w-24" src="/img/pizza.png" alt="product">
-                <div class=" flex-1 ml-4">
-                    <h1>Marinara</h1>
-                    <span>MEDIUM</span>
-                </div>
-                <span class="flex-1">1 Pcs</span>
-                <span class="font-bold text-lg">$300</span>
-            </div>
-        </div>
+            <% } %> <!-- Ends for loop -->
+         </div>
         <hr/>
 
         <div class="text-right py-4">
             <div>
                 <span class="text-lg font-bold">Total Amount : </span>
-                <span class="amount text-2xl font-bold ml-2">$300</span>
+                <span class="amount text-2xl font-bold ml-2">$<%= session.cart.totalPrice %></span>
             </div>
             <div class="mt-12">
                 <form action="">
@@ -63,6 +54,8 @@
 
     </div> <!-- Ends Order Cart -->
 
+    <% } else { %>
+
     <!-- Empty Cart -->
     <div class="empty-cart py-16">
         <div class="container mx-auto text-center">
@@ -76,5 +69,7 @@
             <a href="/" class="inline-block mt-12 px-6 py-2 rounded-full text-white font-bold btn-primary">Go back</a>
         </div>  
     </div><!-- Ends Empty Cart-->
+
+    <% } %>
 
 </section>
