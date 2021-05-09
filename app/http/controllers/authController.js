@@ -6,12 +6,18 @@ const passport = require('passport');
 
 const authController = () =>{
 
+    const _redirectUrl = (req)=>{
+        return req.user.role === 'admin' ? '/admin/orders' : '/customer/orders' ;
+    }
+
     // it return an object has a callback function of their respective routes.
     return {
+                  // GET ROute : /register
         register : (req,res) => {
             res.render('auth/register')
         },
 
+                  // POST ROute : /register
         postRegister : async(req,res) => {
             // console.log(req.body)
 
@@ -53,11 +59,14 @@ const authController = () =>{
             });
             
         },
+                  // GET ROute : /login
 
         login : (req,res) =>{
             res.render('auth/login')
-        },
-
+        },      
+        
+        
+        // POST ROute : /login
         postLogin : (req,res, next) => {
              // console.log(req.body)
 
@@ -89,10 +98,12 @@ const authController = () =>{
                     }
 
                     // redirect home page
-                    return res.redirect('/')
+                    return res.redirect(_redirectUrl(req))
                 })
             })(req, res, next) ; // it returns a function has argument req,res,next .
         },
+
+        // POST ROute : /logout
 
         logout : (req,res) => {
             req.logout();

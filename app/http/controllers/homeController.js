@@ -6,6 +6,7 @@ const homeController = () =>{
 
     // it return an object has a callback function of their respective routes.
     return {
+                  // GET ROute : /
         index : async (req,res) => {
             // fetch all pizaa items 
             const pizzas = await Menu.find();

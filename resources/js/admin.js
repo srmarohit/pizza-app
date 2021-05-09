@@ -1,67 +1,12 @@
+   // Admin related client js code 
 
-import axios from 'axios' 
-import Noty from 'noty'
-// import axios from 'axios'
+import axios from 'axios'
 import moment from 'moment'
 
-// import { initAdmin } from './admin'
-
-// create action on add cart button
- let addCart = document.querySelectorAll('.add-to-cart');  // return array
- // let cartCounter = document.querySelector('#cartCounter') // cart icon
-
- //create updateCart()
- function updateCart(pizza){
-    axios.post('/update-cart', pizza).then(res => {
-        //console.log(res) 
-        cartCounter.innerText = res.data.totalQty ; //instad this we fetch data from session
-
-        // show notification 
-        new Noty({
-           type:'success',
-           text : "Items successfully Added !",
-           timeout : 1000,
-           progressBar:false
-        }).show()
-    }).catch(err => {
-       // show error Notification
-       new Noty({
-         type:'error',
-         text : "Something went Wrong !",
-         timeout : 1000,
-         progressBar:false
-      }).show()
-    })
- }
-
- addCart.forEach(cart => {
-    cart.addEventListener('click', (e)=>{
-         // console.log(cart.dataset.pizza)
-         let pizza = JSON.parse(cart.dataset.pizza);
-         // call updateCart(pizza) for updating cart 
-
-         updateCart(pizza);
-    })
- })
-
- // code for remove order alert message after 2 sec
- const alertMsg = document.getElementById('success-alert');
- if(alertMsg){
-    setTimeout(()=>{
-       alertMsg.remove();
-    },2000)
- }
-
-
- // call initAdmin()
-
-    // Admin related client js code 
-
    
-  function initAdmin(){
+ const initAdmin = () => {
     // select element of table body
-    const orderTableBody = document.querySelector("#orderTableBody");
-    //console.log(orderTableBody.innerHTML)
+    const orderTableBody = document.getElementById('#orderTableBody');
 
     // create array for all orders
     let orders = [];
@@ -76,12 +21,11 @@ import moment from 'moment'
             "X-Requested-With" : "XMLHttpRequest"
         }
     }).then(res => {
-      // console.log("data : "+res.data.map(order=> order._id ))
-       orders = res.data ;
-       markup = generateMarkup(orders);
-       orderTableBody.innerHTML = markup ;
-    }).catch(err => {
-         console.log(err , " Error in axios.get() in /admin/orders")
+        orders = res.data ;
+        markup = generateMarkup(orders);
+        orderTableBody.innerHTML = markup ;
+    }).catch(err=>{
+            console.log(err , " Error in axios.get() in /admin/orders")
     })
 
     // define renderItems() to load all items related to user order
@@ -150,25 +94,24 @@ import moment from 'moment'
                         </select>
                       </form>
 
-                      <div
-                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20">
-                          <path
-                              d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                      </svg>
-                  </div>
-                  
+                         <div
+                            class="point-events-none absolute indert-y-0 flex
+                            items-center px-2 text-gray-700">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+
                     </div>
                 </td>
 
                 <td class="border px-4 py-2"> ${moment(order.createdAt).format('hh:mm A')}</td>
             </tr>
         `
-        }).join('')
+        }).join(' ')
            
     } // ends generateMarkup()
 
 } // ends initAdmin()
 
- initAdmin();
+module.exports = initAdmin ;
