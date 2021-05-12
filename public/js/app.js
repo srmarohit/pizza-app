@@ -1834,6 +1834,88 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./resources/js/admin.js":
+/*!*******************************!*\
+  !*** ./resources/js/admin.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ initAdmin)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_2__);
+// Admin related client js code 
+
+
+
+function initAdmin(socket) {
+  // pass socket object from app.js
+  // select element of table body
+  var orderTableBody = document.querySelector("#orderTableBody"); //console.log(orderTableBody.innerHTML)
+  // create array for all orders
+
+  var orders = []; // create markup for table body and initially se to undefined means not initialized
+
+  var markup; // Fetch all data from server regarding all orders using axios client ajax reqquest.
+
+  axios__WEBPACK_IMPORTED_MODULE_0___default().get('/admin/orders', {
+    headers: {
+      "X-Requested-With": "XMLHttpRequest"
+    }
+  }).then(function (res) {
+    // console.log("data : "+res.data.map(order=> order._id ))
+    orders = res.data;
+    markup = generateMarkup(orders);
+    orderTableBody.innerHTML = markup;
+  })["catch"](function (err) {
+    console.log(err, " Error in axios.get() in /admin/orders");
+  }); // define renderItems() to load all items related to user order
+
+  function renderItems(items) {
+    var parsedItems = Object.values(items); // return all values in an array
+
+    return parsedItems.map(function (menuItem) {
+      return "\n               <p> ".concat(menuItem.item.name, " - ").concat(menuItem.qty, " pcs </p>\n           ");
+    }).join('');
+  } // define generateMarkup function return  html form of table body
+
+
+  function generateMarkup(orders) {
+    // iterate orders array and return
+    return orders.map(function (order) {
+      // return an object order within table row markup
+      return "\n           <tr>\n               <td class=\"border px-4 py-2 text-green-900\">\n               <p> ".concat(order._id, " </p>\n               <div> ").concat(renderItems(order.items), " </div>\n               </td>\n\n               <td class=\"border px-4 py-2\"> ").concat(order.customerId.name, "</td>\n               <td class=\"border px-4 py-2\"> ").concat(order.phone, "</td>\n               <td class=\"border px-4 py-2\"> ").concat(order.address, "</td>\n\n               <td class=\"border px-4 py-2\">\n                   <div class=\"inline-block relative w-64\">\n                     <form action=\"/admin/order/status\" method=\"POST\">\n                       <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\"/>\n\n                       <select name=\"status\" onchange=\"this.form.submit()\"\n                       class=\"block appearance-none w-full bg-white border\n                       border-gray-400 hover:border-gray-500 px-4 py-2 pr-8\n                       rounded shadow leading-tight \n                       focus:outline-none  focus:shadow-outline\">\n                       \n                       <option value=\"order_placed\"\n                           ").concat(order.status === 'order_placed' ? 'selected' : '', "\n                       >  Placed  </option>\n                       \n                       \n                       <option value=\"confirmed\"\n                           ").concat(order.status === 'confirmed' ? 'selected' : '', "\n                       >  Confirmed  </option>\n\n                       \n                       <option value=\"prepared\"\n                           ").concat(order.status === 'prepared' ? 'selected' : '', "\n                       >  Prepared  </option>\n\n                       \n                       <option value=\"delivered\"\n                           ").concat(order.status === 'delivered' ? 'selected' : '', "\n                       >  Delivered  </option>\n\n                       \n                       <option value=\"completed\"\n                           ").concat(order.status === 'completed' ? 'selected' : '', "\n                       >  Completed  </option>\n\n                       </select>\n                     </form>\n\n                     <div\n                     class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700\">\n                     <svg class=\"fill-current h-4 w-4\" xmlns=\"http://www.w3.org/2000/svg\"\n                         viewBox=\"0 0 20 20\">\n                         <path\n                             d=\"M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z\" />\n                     </svg>\n                 </div>\n                 \n                   </div>\n               </td>\n\n               <td class=\"border px-4 py-2\"> ").concat(moment__WEBPACK_IMPORTED_MODULE_1___default()(order.createdAt).format('hh:mm A'), "</td>\n           </tr>\n       ");
+    }).join('');
+  } // ends generateMarkup()
+  // get orderplaced info for admin
+
+
+  socket.on('orderPlaced', function (order) {
+    new (noty__WEBPACK_IMPORTED_MODULE_2___default())({
+      type: 'success',
+      text: "New Order Placed !",
+      timeout: 1000,
+      progressBar: false
+    }).show(); // push latest order to the orders arrays
+
+    orders.unshift(order); // unshift() insert data at first position of array
+    // then clear first orderTableBody
+
+    orderTableBody.innerHTML = ''; // now insert fresh all orders
+
+    orderTableBody.innerHTML = generateMarkup(orders); // pass orders array 
+  });
+} // ends initAdmin()
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -1848,11 +1930,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _admin_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./admin.js */ "./resources/js/admin.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
  // import axios from 'axios'
 
- // import { initAdmin } from './admin'
-// create action on add cart button
+
+ // create action on add cart button
 
 var addCart = document.querySelectorAll('.add-to-cart'); // return array
 // let cartCounter = document.querySelector('#cartCounter') // cart icon
@@ -1896,53 +1985,87 @@ if (alertMsg) {
   setTimeout(function () {
     alertMsg.remove();
   }, 2000);
-} // call initAdmin()
-// Admin related client js code 
+} // update status of order
 
 
-function initAdmin() {
-  // select element of table body
-  var orderTableBody = document.querySelector("#orderTableBody"); //console.log(orderTableBody.innerHTML)
-  // create array for all orders
+var statuses = document.querySelectorAll('.status_line'); // return all status list in an array
 
-  var orders = []; // create markup for table body and initially se to undefined means not initialized
+var hiddenInput = document.querySelector("#hiddenInput");
+var order = hiddenInput ? hiddenInput.value : null;
+order = JSON.parse(order); //console.log(order)
+// create dynamically a small tag to show time
 
-  var markup; // Fetch all data from server regarding all orders using axios client ajax reqquest.
+var small = document.createElement('small');
 
-  axios__WEBPACK_IMPORTED_MODULE_0___default().get('/admin/orders', {
-    headers: {
-      "X-Requested-With": "XMLHttpRequest"
+function updateStatus(order) {
+  // first rremove step-completed and current classes from statuses
+  statuses.forEach(function (status) {
+    status.classList.remove('step-completed');
+    status.classList.remove('current');
+  }); // now set stepcompleted to true 
+
+  var stepCompleted = true;
+  statuses.forEach(function (status) {
+    var dataProp = status.dataset.status; // return data-status value 
+    // Actualy our first time status order_placed bydefault completed therefore we set stepCompleted is true for first status
+    // Apply condition to check stepCompleted
+
+    if (stepCompleted) {
+      status.classList.add('step-completed'); // so applied here this class to make it gray
+    } // check if another status is complete or not
+
+
+    if (dataProp === order.status) {
+      stepCompleted = false;
+      small.innerText = moment__WEBPACK_IMPORTED_MODULE_2___default()(order.updatedAt).format('hh:mm A');
+      status.append(small);
+
+      if (status.nextElementSibling) {
+        // matched
+        status.nextElementSibling.classList.add('current'); // their next li item to make into primary color.
+      }
     }
-  }).then(function (res) {
-    // console.log("data : "+res.data.map(order=> order._id ))
-    orders = res.data;
-    markup = generateMarkup(orders);
-    orderTableBody.innerHTML = markup;
-  })["catch"](function (err) {
-    console.log(err, " Error in axios.get() in /admin/orders");
-  }); // define renderItems() to load all items related to user order
+  });
+}
 
-  function renderItems(items) {
-    var parsedItems = Object.values(items); // return all values in an array
+updateStatus(order); // CLient side Scoeket Initialization
 
-    return parsedItems.map(function (menuItem) {
-      return "\n                <p> ".concat(menuItem.item.name, " - ").concat(menuItem.qty, " pcs </p>\n            ");
-    }).join('');
-  } // define generateMarkup function return  html form of table body
+var socket = io();
+var adminPath = window.location.pathname; // provide path name of page
+// console.log(pathname)   // /admin/orders
 
+if (adminPath.includes('admin')) {
+  // if url includes admin it means this is admin site
+  // call initAdmin()
+  // Admin related client js code execute when admin related page loads
+  (0,_admin_js__WEBPACK_IMPORTED_MODULE_3__.default)(socket); // create Room for admin order Controller 
 
-  function generateMarkup(orders) {
-    // iterate orders array and return
-    return orders.map(function (order) {
-      // return an object order within table row markup
-      return "\n            <tr>\n                <td class=\"border px-4 py-2 text-green-900\">\n                <p> ".concat(order._id, " </p>\n                <div> ").concat(renderItems(order.items), " </div>\n                </td>\n\n                <td class=\"border px-4 py-2\"> ").concat(order.customerId.name, "</td>\n                <td class=\"border px-4 py-2\"> ").concat(order.phone, "</td>\n                <td class=\"border px-4 py-2\"> ").concat(order.address, "</td>\n\n                <td class=\"border px-4 py-2\">\n                    <div class=\"inline-block relative w-64\">\n                      <form action=\"/admin/order/status\" method=\"POST\">\n                        <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\"/>\n\n                        <select name=\"status\" onchange=\"this.form.submit()\"\n                        class=\"block appearance-none w-full bg-white border\n                        border-gray-400 hover:border-gray-500 px-4 py-2 pr-8\n                        rounded shadow leading-tight \n                        focus:outline-none  focus:shadow-outline\">\n                        \n                        <option value=\"order_placed\"\n                            ").concat(order.status === 'order_placed' ? 'selected' : '', "\n                        >  Placed  </option>\n                        \n                        \n                        <option value=\"confirmed\"\n                            ").concat(order.status === 'confirmed' ? 'selected' : '', "\n                        >  Confirmed  </option>\n\n                        \n                        <option value=\"prepared\"\n                            ").concat(order.status === 'prepared' ? 'selected' : '', "\n                        >  Prepared  </option>\n\n                        \n                        <option value=\"delivered\"\n                            ").concat(order.status === 'delivered' ? 'selected' : '', "\n                        >  Delivered  </option>\n\n                        \n                        <option value=\"completed\"\n                            ").concat(order.status === 'completed' ? 'selected' : '', "\n                        >  Completed  </option>\n\n                        </select>\n                      </form>\n\n                      <div\n                      class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700\">\n                      <svg class=\"fill-current h-4 w-4\" xmlns=\"http://www.w3.org/2000/svg\"\n                          viewBox=\"0 0 20 20\">\n                          <path\n                              d=\"M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z\" />\n                      </svg>\n                  </div>\n                  \n                    </div>\n                </td>\n\n                <td class=\"border px-4 py-2\"> ").concat(moment__WEBPACK_IMPORTED_MODULE_2___default()(order.createdAt).format('hh:mm A'), "</td>\n            </tr>\n        ");
-    }).join('');
-  } // ends generateMarkup()
-
-} // ends initAdmin()
+  socket.emit('join', 'adminRoom'); // set only one room for admin
+} // emit to join for new connection 
 
 
-initAdmin();
+if (order) {
+  socket.emit('join', "order_".concat(order._id));
+}
+
+socket.on('orderUpdated', function (data) {
+  // orderUpdated comes from server.js file
+  var updatedOrder = _objectSpread({}, order);
+
+  updatedOrder.updatedAt = moment__WEBPACK_IMPORTED_MODULE_2___default()().format();
+  updatedOrder.status = data.status;
+  console.log(data); //display data at client console at real time without refreshing
+  // call updateStatus and pass updateOrder
+
+  updateStatus(updatedOrder); // show notification 
+
+  new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+    type: 'success',
+    text: "Items successfully Updated !",
+    timeout: 1000,
+    progressBar: false
+  }).show();
+});
 
 /***/ }),
 

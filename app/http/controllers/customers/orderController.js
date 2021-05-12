@@ -55,9 +55,19 @@ function orderController(){
                 req.flash('success' ,'Your order is placed successfully !')
                 // empty cart
                 delete req.session.cart ;
+
+                //but we need to populate customerId from order to get a customer name  
+                Order.populate(result, {path : 'customerId'}, (err, placedOrder)=>{
+                    
+                // Emit an event to the admin statuscontroller panel
+                const eventEmitter = req.app.get('eventEmitter') ;
+                eventEmitter.emit('orderPlaced', placedOrder);
                 // redirect orders page
                 return res.redirect('/customer/orders')
+               
+                }) 
             }
+
         }).catch(err => {
                req.flash('error', 'Something went wrong')
                return res.redirect('/cart')

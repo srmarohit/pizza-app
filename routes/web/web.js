@@ -9,6 +9,8 @@ const guest = require('../../app/http/middlewares/guest');
 const auth = require("../../app/http/middlewares/auth");
 const adminOrderController = require("../../app/http/controllers/admin/orderController");
 const admin = require("../../app/http/middlewares/admin");
+const statusController = require("../../app/http/controllers/admin/statusController");
+const singleOrderStatus = require("../../app/http/controllers/customers/singleOrderStatus");
 
 const initRoute = (app) => {
   // app is an express object that passing from server.js
@@ -34,9 +36,11 @@ const initRoute = (app) => {
 
   app.post('/orders', auth,  orderController().store )
   app.get('/customer/orders', auth, orderController().index)
+  app.get('/customer/order/status/:id', auth, singleOrderStatus().status)
 
   //Admin ROutes
   app.get('/admin/orders',admin, adminOrderController().index )
+  app.post('/admin/order/status' , admin, statusController().update);
 };
 
 module.exports = initRoute;

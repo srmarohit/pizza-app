@@ -348,10 +348,66 @@ it return a callback function with req,res,next argument that is defined in our 
 
 <------------ Setup Logout System ------------------->
 /* Record 10 */
+[-] for logout we simply need to do only a post request .
+[-] first we create a post route for logout that handle from authController.
+[-] inside authController we create a property logout that holds callback function of logout route.
+[-] so now write code for logout.
+[-] so call req.logout() where logout() is a method of passport .
+[-] at the end we just return res.redirect('/');
 
-/* Record 10 */
+[-] now on menubar we applied this logout route link on logout button.
+[-]but here we need to do setup one thing over there that the logout link will be show if user logged in.
+[-] and if user logged in then login and register button should be gone from menubar.
+
+[-] for that we just simply apply a if condition on menubar.
+[-] if(user) where user comes from global variable res.locals.user = req.user;
+[-] {.... condn true !  then show logout button and hide login and register button}
+[-] else {..... condn false ! then simply show login and register button . hide logout button }
+
+/* Record 10 Ends */
+
+/* Record 11 */
+<======== Order pizza ===========>
 
 
+/* Record 11 Ends */
+
+
+/* Record 12 */
+<========= customer orders page ===============>
+[-]order.ejs
+
+/* Record 12 Ends */
+
+
+/* Record 13 */
+<======= admin order panel =========== >
+[-]admin order.ejs
+
+
+/* Record 13 Ends */
+
+
+/* Record 14 */
+<======== admin update order status ======>
+
+
+/* Record 14 Ends */
+
+/* Record 15 */
+<====== Single Order Tracking Status====>
+
+
+
+/* Record 15 Ends*/
+
+
+/* Record 16 */
+<====== Socket Integration for real time tracking ====>
+
+
+
+/* Record 16 Ends*/
 
 
 <------------------ Record -------------------->

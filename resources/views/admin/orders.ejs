@@ -2,6 +2,16 @@
 <section class="orders light-section">
     <div class="container mx-auto pt-12">
         <h1 class="font-bold text-lg mb-4">All Orders</h1>
+        <% if(messages.error) { %>
+            <span class="text-red-500 text-sm"><%= messages.error %></span>
+        <% } %>
+
+        <% if(messages.success) { %>
+            <div id="success-alert" class="flex items-center bg-green-500 text-white font-bold text-sm px-4 py-3" role="alert">
+                <p><%= messages.success %></p> <!-- goes off after 2min. (code written in app.js )-->
+            </div> <!-- alert div ends -->
+            <% } %>
+           
         <table class="w-full table-auto bg-white">
             <thead>
                 <tr>

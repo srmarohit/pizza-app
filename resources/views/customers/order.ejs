@@ -1,5 +1,4 @@
 <!-- create order page to display all order placed by customer -->
-<h1 id="helo">Hello</h1>
 
 <section class="orders light-section">
     <div class="container mx-auto pt-12">
@@ -28,7 +27,7 @@
                 %>
                 <tr>
                     <td class="border px-4 py-2">
-                        <a class="link" href="/"><%= order._id %></a>
+                        <a class="link" href="/customer/order/status/<%= order._id %>"><%= order._id %></a>
                     </td>
                     <td class="border px-4 py-2"><%= order.phone %></td>
                     <td class="border px-4 py-2"><%= order.address %></td>
