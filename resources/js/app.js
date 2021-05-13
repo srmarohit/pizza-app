@@ -4,7 +4,9 @@ import Noty from 'noty'
 // import axios from 'axios'
 import moment from 'moment'
 
+
  import initAdmin  from './admin.js'
+ import initStripe from './stripe.js'
 
 // create action on add cart button
  let addCart = document.querySelectorAll('.add-to-cart');  // return array
@@ -98,6 +100,7 @@ import moment from 'moment'
 
  updateStatus(order);
 
+ initStripe();
 
 
  // CLient side Scoeket Initialization
@@ -128,7 +131,7 @@ import moment from 'moment'
       const updatedOrder = { ...order }
       updatedOrder.updatedAt = moment().format();
       updatedOrder.status = data.status ;
-      console.log(data); //display data at client console at real time without refreshing
+     // console.log(data); //display data at client console at real time without refreshing
   
          // call updateStatus and pass updateOrder
          updateStatus(updatedOrder);
@@ -137,7 +140,7 @@ import moment from 'moment'
         new Noty({
          type:'success',
          text : "Items successfully Updated !",
-         timeout : 1000,
+         timeout : 3000,
          progressBar:false
       }).show()
 
