@@ -241,7 +241,7 @@
 
 [-] now store all registration data into database .
 [-] first we create a model file user.js for creating model .
-[-] in user.js file import first mongoose call mongoose.schema return a class is return in ref var Schema .
+[-] in user.js file import first mongoose call mongoose.schema return a class is return in refer var Schema .
 [-] initial Schema with new keyword pasing an object to this constructor.
 [-] define schema into constructor object having propert name, email, password and role.
 [-] role is basically a string and set to default : 'customer'.
@@ -276,7 +276,7 @@
 [-]Now lets do main coding inside of init(passport) of passport.js file.
 [-] first import passport-local module and call thier property Strategy like require('passport-local').Strategy 
     that returns a class or constructor store in a variable LocalStrategy.
-[-] now come to the init function has an parameter passport is and object and call its middleware function passport.use(); 
+[-] now come to the init function has an parameter passport object and call its middleware function passport.use(); 
 [-] initialize a LocalStrategy class with new keyword inside passport.use(new LocalStrategy()).
 [-] and it takes an object as first argument and second is a callback function into this constructor.
 [-] inside of first argument object write set value for property of usernameField i.e email is an our username for an our application.
@@ -299,24 +299,26 @@
 [-] last argument pass an object with key errror .
 
 [-] now if we get user then next step to check password .
-[-] so we have a hashed password into the database. 
+[-] so we have hashed  a password by using bcrypt module into the database. 
     so first compare this hashed password with variable password come from callback argument.
 [-] before of doing this we need to import bcrypt module.
 [-] call bcrypt.compare(password, user.password).then().catch();
 [-] into then((match)=>{}) method returns match may have true or false.
-[-] now check match if its true , just return done(null, user, {message :"Successfully registered"}).
+[-] now check match if its true , just return done(null, user, {message :"Successfully LoggedIn"}).
 [-] where we pass user object as second argument becoz our credential hasbeen matched.
 
 [-] in ohter hand out side the if block simply return done(null, false, {message : "username or password does not matched. "}).
 
 [-] now come to catch block of bcrypt.compare() method just return done(null ,false, {message : "Something went wrong."}).
 
+[-]at the end after passport.use() middleware create another two method passport.serialize() and passport.deserialize().
+[-]
 [-] here we have done our passport.js file.
 
 [-] now come to route of post method login. and 
 it return a callback function with req,res,next argument that is defined in our authController.js file.
 
-[-] So inside of authController() function we define a new propert postLogin represent a callback function of post login route.
+[-] So inside of authController() function we define a new property postLogin represent a callback function of post login route.
 [-] so begin with validation of user login credential about any empty field user if pass.
 [-] then just call req.flash('error','All field required') and return res.redirct('/login')
 [-] inside of that function call passport.authenticate('local', (error, user, info)=>{}) 
@@ -329,7 +331,7 @@ it return a callback function with req,res,next argument that is defined in our 
 
 [-] So we have completed passport.authenticated() code.
 [-] but still we are missing one thing is that actually passport.authenticate() return a function.
-[-] so call that functio attached () paranthesis to passport.authenticate()(req,res,next) and pass req,res,next as argument .
+[-] so call that function attached () paranthesis to passport.authenticate()(req,res,next) and pass req,res,next as argument .
 
 
 [-] now we need to do some changes with login page, so lets come to the page.
@@ -343,7 +345,7 @@ it return a callback function with req,res,next argument that is defined in our 
 
 [-] So finally we completed login system code.
 
-/* Record-09 */
+/* Record-09 */ 
 
 
 <------------ Setup Logout System ------------------->
@@ -368,21 +370,149 @@ it return a callback function with req,res,next argument that is defined in our 
 
 /* Record 11 */
 <======== Order pizza ===========>
+[-]since we have setup our cart.ejs file in which if user add pizza to the cart then we see order placed form.
+[-]to place order we need to fill order form that submitted to the action '/orders' .
+[-]so first we create a routes for '/orders' and callback defined in app/controller/customer/orderController.js file.
+[-]in this file create a property named store refer a callback function of '/orders' routes.
+[-] now just put this store function property at place of callback function of 'orders' route like orderController().store .
+[-] after setup all thing just go back to store property function to define a callback function takes req,res argument.
+[-] first destructuring input coming from order form placed in cart.ejs .
+[-] and just validate the req.body and if anyone field didnt get then respone to the user back with error message like
+       req.flash('message', 'All fields required ');
+[-] although user send all info then just save that in orders collection into database.
+
+[-] so create a model for order in which we define a schema for an order collection.
+[-]we set first field a id of customer named customerId in which set property type is an Object and set another property ref has User.
+[-]the 'ref' property of customerId represent to the User Collection.
+[-] and set last property required as true. So we ahve done for custermerId.
+[-] now come to define second field items that has object type and required is true.
+[-]Actually in items field we will store ordered pizza get from req.session.cart.items .
+[-] and third field for phone no. and fourth one is address will be string type.
+[-] and set another field paymentType where we provide a default property and value is 'COD' .
+[-] similar we create another field for status has two property first type is a String and second default property has a value 'order_placed'.
+[-] in the last in order schema we define second object for timestamps property set true. 
+
+[-] after set up model for Order we just import this into customer/orderController.js file.
+[-]In store property function we just create an instance with new keyword and pass all data respect to the order model
+     and refer this instance of Order to the variabe order.
+[-] as an argument we pass an object has propert like customerId takes value from req.user._id.
+[-] items property takes value from req.session.cart.items .
+[-] and phone and address get value from user form.
+[-] we dont need to provide a value for paymentType and status since we set default value for them . 
+[-] now call order.save(). and its promise method so here we have two choice either we call then() method 
+    or apply await keyword in front of order.save();
+[-] so we pick first one  then(result =>{}) has a call back function in which we just sent back respone to the user.
+[-] now here we do most important thing to delete req.session.cart .
+[-] we just redirect to the home page res.redirect('/') or res.redirect('/customer/orders') build further.
+[-]if we get any trouble to save an order then just execute  catch() has a callback function 
+        and send response with error message like req.flash('message','Something went wrong.')
 
 
-/* Record 11 Ends */
-
+/* Record 11 Ends */completed
 
 /* Record 12 */
 <========= customer orders page ===============>
-[-]order.ejs
+[-] We setup for orders page that ordered from user into views/customer/order.ejs.
+[-] create a new table for display all orders related info.
+[-] But before all of that we need to setup a route for /customer/orders.
+[-] we define a new route to get all orders related to user set the callback function into customer/orderController.js file.
+[-]come to the orderController.js file create a property index for callback function of '/customer/orders' route 
+[-] so just call Order.find() method to get all orders related to the user.
+[-] inside of find() we pass a three argument Order.find({customerId : req.user._id}, null, { createdAt : {sort : -1} })
+[-]first argument represent in which basis to find data and second argument we set null becoz its for update any info
+    and lastone for condition we have set to display all orders in descending manner.
+[-] it also return a promise that we apply await in front of this method and return an object or array of object store in a variable orders.
+[-] if we get orders means orders variable is not null then return this data orders with res.render('cutomers/order', {orders, moment}).
+[-] moment is used for formating time so also send moment object module.
 
-/* Record 12 Ends */
+[-]now the time to design and /customer/orders page that is rendering from orderController and getting two object orders and moment.
+[-]in customers/order.ejs file we define table tag and here we apply forEach to iterate all orders.
+[-] apply orders.forEach(order => {}) return an order object in each iteration.
+[-] inside table we define four coloumn for orderId  phone address and last for time when order placed.
+[-] in orderId we put value got from order._id  and phone and address from order object.
+[-]and last one for time we use moment object for formating time which is getting from order.createdAt.
+[-]so we just apply moment(order.createdAt).format(hh : mm A) return time like 11 : 30 PM .
+[-] such do that iteration inside table body and iterate table row.
+[-] now we have done another functionality to show all orders.
+
+/* Record 12 Ends */ completed
 
 
 /* Record 13 */
 <======= admin order panel =========== >
-[-]admin order.ejs
+[-]Similar customer order page and order controller we will do for admin to show all latest order on thier dashboard.
+[-] first we create and admin/order.ejs page in which create a section orders and inside 
+    create a div has a tailwind class alert-success and inside there we display the flash messages.
+[-] It goes off after 2 sec though apply script method setTimeout(()=> alertMsg.remove(), 2000) over here in App.js.
+[-] after that we define a table to display all latest orders comes from customer.
+[-] inside table we provide 5 coloumn such as order details, name, phone, address, order_status menu , time .
+[-] and create a tablebody provide a name orderTableBody.and here we fetch all orders data fro our javascript.
+[-] so first we create a route for get all orders their callback function define into admin/orderController.js .
+[-]in orderController.js file we define orderController function in which create a property index targets to callback function of '/admin/orders' .
+[-] But here we gonna ajax call to fetch all orders from our client javascript.
+[-] so first we create a admin.js file inside of resources/js/ folder. inside admin.js create a function initAdmin() ;
+[-] so lets do code for ajax call into this initAdmin().
+[-] but first of all we just export this function by apply export keyword in front of initAdmin();
+[-]similar we import this function into our app.js file by apply import {initAdmin} from './admin.js' .
+[-] and call it initAdmin() at end of code into app.js.
+[-] so come to admin.js file and first create a variable name orderTableBody refer to the orderTableBody element of admin/order.ejs file.
+[-] create another variable orders is  used to store all orders. for the timebeing an empty array set for orders variable.
+[-] now third variable we gonna create is for store markup for table body. 
+[-] after creating this 3 variable orderTableBody, orders, and markup we just call ajax method to fetch all orders .
+[-] for ajax calling we use module axios and we need first install axios then import it into our admin.js file.
+[-] now call axios.get('admin/orders',{}).then().catch() takes first parameter for url and second for object to configure request headers.
+[-] whether we call ajax so here we have to define and configuration as headers for xhr request  { headers : { "X-Requested-With" : "XMLHttpRequest"} } .
+[-] and as always it returns a promise handle by then() with call back function having response.
+[-] now res.data is nothing but a all orders came from admin/orders route .
+[-] the store return res.data into orders variable.
+[-] now call the function generateMarkUp(orders)  with pass orders array as a parameter 
+     return a html table body markup store into markup variable.
+[-]however we have not created a function generateMarkUp() yet . but we will create later first we complete the then().
+[-] so after markup variable we store this variable into orderTableBody.innerHTML = markup.
+[-] and finally this markup attached to the admin/order.ejs page.
+
+[-]define generateMarkUp(orders) 
+[-] inside function we just iterate all orders using orders.map(order => {}) method.
+[-]inside callback of map return a string of table row that holds all table data with their actual value.
+[-] in the string start as a template literal whether its placed all order data into thier table data.
+[-] so first create <tr></tr> and in between tr tag we place <td></td> tag.
+[-]now the main thing to place actual data getting from order object that we need place in thier respective position.
+[-]so in first <td> tag we place orderId and list of items.
+[-]for that we create a paragraph tag to place order._id and create div tag to show all list of items that user ordered .
+[-] these <p> and <div> tag placed inside of our first <td> tag. 
+[-] for displaying ordered items inside <div> tag we just define new function renderItems(order.items) and pass order.items. 
+    and call this function into the <div> tag of first <td> .
+[-] lets define renderItems(items) take items argument comes from order.items.
+[-] actually this items is an object has property pizza_id as a key and their object as a value . 
+    it means pizza_id holds again an object has two property item object, qty. 
+[-] so here we need to iterate items object and can say values of all key of that items object actually we need only their values.
+[-] for getting values of items object only call Object.values(items) return all values in an array stored into parsedItems variable.
+[-] now iterate this all values to call parsedItems.map(menuItems => {}) return an object menuItems has two property item as an object and other is qty represent quantity of item.
+[-] similar generateMarkUp function here also return a markup of <p> tag in which we place a variable ${menuItems.item.name} : ${menuItems.qty} .
+[-] actually map method stores all returns of iteration into an array that we need to call join('') method to concatenate all <p> items .
+[-] at the end we return this concatenated values from map() by apply retur keyword in front of map().
+[-] So we have done it and now come back to generateMarkUp() and define another <td> tag for placing another items like name, phone, address , time of order_placed and status.
+
+[-] in the status <td> we gonna create a form to call ajax to update the status of order .
+[-] inside this <td> create a <form> tag has an action '/admin/order/status' with POST method. 
+[-] inside of <form> tag create an input hidden type field set value as order._id and create next  select menu tag <select> having lots of option <option> tag .
+[-] as an option we provide a five option order_placed and other four is confirmed, prepared, delivered and completed .
+[-] so to find out which status is currently selected we need to apply ternary operater over option like <%= order.status === 'order_placed' ? 'selected' : '' %> .
+[-] similar we will do for all option .
+[-] in next <td> we pass time when order_placed by customer. for that we call moment module that get by importing in js file.
+[-] inside <td> we place moment(order.createdAt).format(hh:mm A) .
+[-] so this map() returns each iteration stores into an array so here we need to concatenate these all array into a string so apply join('') at the end of map().
+[-] also apply return keyword in front of map() actually generateMarkUp() return a <tr> tag which is getting from map().
+[-] so far we have completed our admin.js part.
+
+[-] define orderController().
+[-] now come to define callback function for '/admin/orders' route in index property of orderController() inside of admin/orderController.js file.
+[-] So first we import Order model to the file and call Order.find() with popukating customerId like
+    Order.find({status : {ne : 'completed'}}, null,{sort : {'createdAt' : -1 }} ).populate('customerId', '-password').exec((err, orders)=> {}) .
+[-] here we are fetching all orders with populating customerId that gives us all information of customer except their password becoz we define -password as second parameter in populate().
+[-] when we get orders we just check if this route call from ajax or client js by apply condition if(req.xhr) then return res.json({orders})
+    otherwise simple return and redirect to '/admin/orders' page.
+[-] now we also done of our  admin orderController part.
 
 
 /* Record 13 Ends */
@@ -390,14 +520,94 @@ it return a callback function with req,res,next argument that is defined in our 
 
 /* Record 14 */
 <======== admin update order status ======>
-
+[-] update order status is kind of post request to tell the user about their order status.
+[-] in this concept we already define a form for updating status on select tag in admin/order.ejs file.
+[-] in this file on each select tag in each row wrap up with a form has action '/admin/order/status' with post method.
+[-] in a form tag we have two tag that first is hidden type input element contains value of order_id and second one is select tag contains order status.
+[-] Actually here we gonna apply onchange attribute over <select> tag and provide value to submit form as this.form.submit().
+[-] after changing status, form submitted and request goes to this '/admin/order/status' route.
+[-]so first define this route and set callback function to the admin/statuscontroller.js file.
+[-] inside statuscontroller.js file create a function statuscontroller() has only property update refer to the callback function of '/admin/order/status' route.
+[-]So when form submitted as they goes to this route and handle by statusController().update property.
+[-] inside there we first find out that perticular order by order id getting from req.body.orderId of hidden input element.
+[-] or we simply update their status by calling Order.updateOne() takes three argument in which first two are an object and last argument is callback function.
+[-] in first argument we pass an object with property _id and set value as req.body.orderId comes from form input element.
+[-] in second object we just update their data. it means the second argument is used form updating data and 
+    here we gonna update only one data {status : req.body.status}. thatswhy we are using updateOne().
+[-] and the last argument provide a callback function return two argument error and updateOrder.
+[-] So first check if we get error then just return a response with status code 422 i.e flash message something wrong and redirect to admin/order/status page.
+[-] else we just again return a response or redirect to admin/orders with success flash message.
+[-] So here we have done this update status functionality.
 
 /* Record 14 Ends */
 
 /* Record 15 */
 <====== Single Order Tracking Status====>
+[-] create a link on orderId in customer/order.ejs file.
+[-] create route with passing orderId as a parameter. like '/orders/:id' where  : represent that you passing parameter id.
+[-] this route handled by customer/singleOrderStatus.js file .
+[-]inside customer/singleOrderStatus.js file create a function singleOrderStatus() return an object has property update holds callback function of /orders/:id route get method.
+[-]lets do code inside update property and just find that order with req.params.id .
+[-]first import Order model and call method Order.findById({_id : req.params.id}) provides promise handle by apply await keyword.
+[-] it returns order store into order variable.
+[-] so here we gonna check that order status only should be accessible by that user.
+[-] apply if condition to check req.user._id with order.customerId but both are object so compare this two object
+    first convert it into string by apply toString() over both object like if(order._id.toString() === req.user._id.toString()) ;
+[-] if it returns true means this user order this pizza. and just render customers/singleOrder with passing {order} object.
+
+[-] singleOrder.ejs file
+[-] now design singleOrder.ejs file in which we create a tracking delivery system page.
+[-] first create a div tag in a section of class status has class status-box and create ul tag have five li tag with class status_line.
+[-] we crete five li tag for order status placed_order confirmed, prepared, delivered, completed.
+[-] you see earlier we passed a order object with render this page. So here we goona use with input hidden element.
+[-] actually here we creating input hidden type element has id hiddenInput and set value a string of order object like value = "<%= JSON.stringify(order)" %>
+    and use this element in app.js for acknowledge user about their order status.
+
+[-] so before do code for script we just style our ul tag has lots of li tag  with data-status atribute has their respective value 
+    oreder_placed, confired, prepared, delivered and completed .
+    and this data should be same as our order status actually we have use of these data in our script file app.js
+    inside li tag we create span tag has content order status .
+[-] now we set the .status ul li span:after is contain dot sybol having position absolute .
+[-] if you set this absolute position then you have to set their  span tag with position relative. 
+[-] similar we dor for span:before and it hold a fontline icon . so again set this position as absolute and 
+    set content of icon in code given in fontline website for each icon like '\f46c' and place this code inside content of span:before.
+[-] simlar we do apply line after each status . so for that we just styling li:before tag again set position as absolute 
+    but before it we need to set position for li tag as relative.
+
+[-] now create an another two class step-completed does gray all status and their line and dot after updating status 
+    and current show that this status is active now and set color as primary.
+[-] similar we do other styling with ul and li and span tag see in the app.scss file.
 
 
+[-] no come to write script for changing status color and apply class at there.
+[-] come into app.js and first call querySelector for select hiddenInput element from singleOrder.ejs file and refer to this hiddenInput variable.
+[-] similar we apply document.querySelectorAll('.status-line) where this class inject to each li tag and store it into statuses variable.
+[-] now check the value od hiddenInput and apply ternary operator on that if has value then return it otherwise return null.
+[-] create variable order store object order getting from hiddenInput element and parse it into json object.
+[-]now create another element small to display time when your order is updated.
+
+[-]now create a function updateStatus(order) pass object order.
+[-] now inside it iterate statuses contains all li items and return each li tag has their data-status atttribute.
+[-] so first we remove and clear out the class .step-completed  and .current from their respective li element.
+   like status.classList.remove('step-completed')
+
+[-] after closing forEach create let variable stepCompleted is to be set as true.and the question arise over here , why is set tobe true.
+[-]Actually here we know that our first status order_placed is already completed on the order time. thats why we set initially as true for stepCompleted.
+
+[-] first iterate again statuses and access their data-status attribute and copy to dataProp vaariabe holds their value about status .
+[-] now apply if condition for stepCompleted and it returns true then write code inside over here.
+[-] then just add a class step-completed to that li tag it means change the color of li with gray.
+[-] after if block we use another if block to check that another status is completed or not.
+[-] pass condition that if dataProp === order.status then returns true.
+[-] and inside of that first set false of stepCompleted .
+[-]set innerText for small element is moment().format(hh:mm A) return current time with this format.
+[-] now append this small tag to the li tag like status.append(small).
+[-] now we need add .current class to thier next sibling li tag..
+[-] so first check is it available nextElementSibling or not.
+[-] if it is then just add a class .current like status.classList.add('current') to their nextElementSibling and it colored this li as primary.
+
+[-]now we have done code for updateStatus() and need to call it so just call it at next line.
+[-]Finally we have completed status tracking functionality .
 
 /* Record 15 Ends*/
 

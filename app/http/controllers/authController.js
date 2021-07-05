@@ -18,7 +18,7 @@ const authController = () =>{
         },
 
                   // POST ROute : /register
-        postRegister : async(req,res) => {
+        postRegister : async (req,res) => {
             // console.log(req.body)
 
             const {name, email, password} = req.body ;
@@ -102,6 +102,28 @@ const authController = () =>{
                 })
             })(req, res, next) ; // it returns a function has argument req,res,next .
         },
+
+        facebookLogin : passport.authenticate('facebook', {scope :"email"} ),
+
+        facebookLoginCallback : passport.authenticate('facebook', {
+            successRedirect : '/',
+            failureRedirect : '/login'
+        }),
+
+        instagramLogin : passport.authenticate('instagram', {scope:"email"}),
+
+        instagramLoginCallback : passport.authenticate('instagram', {
+            successRedirect : '/',
+            failureRedirect : '/login'
+        }),
+
+        googleLogin : passport.authenticate('google', {scope:["email","profile"]}),
+
+        googleLoginCallback : passport.authenticate('google', {
+            successRedirect : '/',
+            failureRedirect : '/login'
+        }),
+
 
         // POST ROute : /logout
 

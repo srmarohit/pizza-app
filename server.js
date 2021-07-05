@@ -8,6 +8,7 @@ const session = require("express-session");
 const MongoDbStore = require("connect-mongo"); // it reutrn a constructor takes session as parameter.
 const flash = require("express-flash");
 const passport = require("passport");
+const {init, facebookAuth, instagramAuth, googleAuth} = require("./app/config/passport");
 const path = require("path");
 const ejs = require("ejs");
 const expressLayout = require("express-ejs-layouts");
@@ -57,7 +58,10 @@ app.use(
 
 // setup passport and configuration and must be below or after session configuration
 // passport local strategies comes from config folder
-require("./app/config/passport")(passport);
+init(passport);
+facebookAuth(passport);
+instagramAuth(passport);
+googleAuth(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 

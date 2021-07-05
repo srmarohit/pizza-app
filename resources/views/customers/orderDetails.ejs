@@ -1,0 +1,75 @@
+<section class="cart py-16">
+
+
+    <!-- Check any items added to cart -->
+        <% if(order) {
+             let totalPrice = 0 ;    
+        %>
+
+    <!-- Order cart -->
+    <div class="order container mx-auto w-full lg:w-1/2">
+        <div class="flex items-center border-b border-gray-300 pb-4">
+            <img src="/img/cart-black.png" alt="cart">
+            <h1 class="font-bold ml-4 text-2xl">Ordered Summary</h1>
+        </div>
+
+        <div class="pizza-list">
+              <!-- get all pizza from order -->
+              <% for(let pizza of Object.values(order.items) ){ %>
+                 <!--  Actualy our all pizza store as property value in a single object order.items. 
+                       thatwhy we first convert items object into array iterate there value items:{pizza_id : {item : {_id :'', image :""}} }
+                -->
+
+                  <div class="flex items-center my-8">
+                <img class="w-24" src="/img/<%= pizza.item.image %>" alt="product">
+                <div class=" flex-1 ml-4">
+                    <h1><%= pizza.item.name %></h1>
+                    <span><%= pizza.item.size %></span>
+                </div>
+                <span class="flex-1"><%= pizza.qty %> Pcs</span>
+                <span class="font-bold text-lg">$<%= pizza.item.price * pizza.qty  %></span>
+            </div>
+            <% 
+                    totalPrice += pizza.item.price*pizza.qty ;
+             } %> <!-- Ends for loop -->
+         </div>
+        <hr/>
+
+        <div class=" py-4 flex justify-between items-center">
+            <a href="/customer/order/status/<%= order._id %>" class="inline-block text-sm font-bold text-green-700"
+                   <% if(order.status === 'completed') { %>
+                     style="pointer-events:none"
+                     <% } %>
+                >Track Order
+            </a>
+            <div class="">
+                <span class="text-lg font-bold">Total Amount : </span>
+                <span class="amount text-2xl font-bold ml-2">$<%= totalPrice %></span>
+            </div> 
+        </div>
+        <a href="/customer/orders" class="inline-block btn-primary px-6 py-2 mt-4 rounded-full font-bold text-white text-right">Back to Orders</a>
+        <!-- Back -->
+       
+
+
+    </div> <!-- Ends Order Cart -->
+
+    <% } else { %>
+
+    <!-- Empty Cart -->
+    <div class="empty-cart py-16">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl font-bold mb-2">Ordered Delivered :)</h1>
+            <p class="text-gray-500 text-lg mb-12">
+                Your Order Successfully delivered to you..<br>
+                To order a Pizza, go to the main page
+            </p>
+            <img class="w-2/5 mx-auto" src="/img/empty-cart.png" alt="empty-cart">
+            <!-- If you want to provide padding to <a> tag first you change the style propert inline to inline-block -->
+            <a href="/" class="inline-block mt-12 px-6 py-2 rounded-full text-white font-bold btn-primary">Go back</a>
+        </div>  
+    </div><!-- Ends Empty Cart-->
+
+    <% } %>
+
+</section>

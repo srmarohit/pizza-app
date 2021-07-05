@@ -24,13 +24,15 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-16"> <!-- Menu item Warapper -->
 
             <!-- Apply ejs scriptlet tag to iterate all pizzas variable comes from index routes -->
-            <%  pizzas.forEach(pizza => { %>
-            
+            <%  pizzas.forEach(pizza => { 
+                if(!pizza.mrp) {
+            %>        
             <div class="w-full md:w-64">
                 <img class=" h-40 mb-4 mx-auto" src="/img/<%= pizza.image %>" alt="">
                 <div class="text-center">
                     <h2 class="mb-4 text-lg"><%= pizza.name %></h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs"><%= pizza.size %></span>
+                    <span class="size py-1 px-4 block rounded-full uppercase text-xs"><%= pizza.size %></span>
+                    <!-- <span class=" py-2 px-4 block rounded-full uppercase text-xs"><del><%= !pizza.mrp ? '-' : "$"+pizza.mrp %></del></span> -->
                     <div class="flex items-center justify-around mt-6">
                         <span class="font-bold text-lg">$<%= pizza.price %></span>
                         <button data-pizza = "<%= JSON.stringify(pizza) %>" class="add-to-cart  py-1 px-6 rounded-full flex items-center font-bold">
@@ -41,10 +43,19 @@
                 </div>
             </div>
 
-        <% }) %><!-- End of forEach-->
+        <% }
+          }) %><!-- End of forEach-->
 
         </div>
 
     </section>
 
+
+
+    <%- include('components/foodCard', {pizzas}); %>
+    <%- include('components/shopInfo'); %>
+
+
+
+    
    

@@ -16,6 +16,12 @@ const userSchema = new Schema({
     role :{
         type : String,
         default:'customer'
+    },
+    facebook_id:{
+        type:String
+    },
+    google_id:{
+        type:String
     }
 }, {
     timestamps:true

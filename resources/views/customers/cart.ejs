@@ -2,7 +2,7 @@
 
 
     <!-- Check any items added to cart -->
-        <% if(session.cart) { %>
+        <% if(session.cart && session.cart.totalPrice) { %>
 
     <!-- Order cart -->
     <div class="order container mx-auto w-full lg:w-1/2">
@@ -18,14 +18,22 @@
                        thatwhy we first convert items object into array iterate there value items:{pizza_id : {item : {_id :'', image :""}} }
                 -->
 
-                  <div class="flex items-center my-8">
+            <div id="<%= pizza.item._id %>" class="flex text-center items-center my-8">
                 <img class="w-24" src="/img/<%= pizza.item.image %>" alt="product">
                 <div class=" flex-1 ml-4">
-                    <h1><%= pizza.item.name %></h1>
-                    <span><%= pizza.item.size %></span>
+                    <h1 class="-mb-2"><%= pizza.item.name %></h1>
+                    <span class="text-muted"><%= pizza.item.size %></span> 
+                </div> 
+
+                <div class="flex-1 flex items-center">
+                    <span class="increment" data-pizzaid="<%= pizza.item._id %>"><i class="las la-plus-square text-xl font-bold"></i></span>
+                         <strong class="qty mx-1"><%= pizza.qty %> Pcs</strong>
+                    <span class="decrement" data-pizzaid="<%= pizza.item._id %>"><i class="las la-minus-square text-xl"></i></span>
                 </div>
-                <span class="flex-1"><%= pizza.qty %> Pcs</span>
-                <span class="font-bold text-lg">$<%= pizza.item.price * pizza.qty  %></span>
+
+                <span class=" mx-auto font-bold text-lg price">$<%= pizza.item.price * pizza.qty  %></span>
+
+                <span class=" trash-item" data-pizzaid="<%= pizza.item._id %>"><i class="las la-trash"></i></span>
             </div>
             <% } %> <!-- Ends for loop -->
          </div>

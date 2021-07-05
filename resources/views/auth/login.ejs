@@ -2,6 +2,20 @@
    <!-- Paste Tailwind form design here.. -->
 
    <div class="w-full max-w-xs">
+     <p class="text-center mb-1 text-xs text-muted">Login with </p>
+     <p class="text-center mb-1">
+       <a href="/auth/facebook">
+        <i class="lab la-facebook social-icon-fb"></i>
+       </a>
+       <a href="/auth/instagram">
+        <i class="lab la-instagram social-icon-insta"></i>
+       </a>
+       <a href="/auth/google">
+        <i class="lab la-goodreads social-icon-google"></i>
+       </a>
+     </p>
+     <p class="text-center mb-1 text-muted"> or</p>
+
     <form action="/login" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <!-- define span tage for flash message -->
       <% if(messages.error) { %>

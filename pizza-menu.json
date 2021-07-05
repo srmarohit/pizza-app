@@ -4,47 +4,65 @@
   },
   "name": "Margherita",
   "image": "pizza.png",
-  "price": "250",
+  "category":"beverages",
+  "price": "175",
+  "mrp":"",
+  "description":"Description of this Product is not available yet.",
   "size": "small"
 },{
   "_id": {
     "$oid": "5eee6671a27a66807cf2bea3"
   },
-  "name": "Marinara",
-  "image": "pizza.png",
-  "price": "300",
-  "size": "medium"
+  "name": "Pepsi",
+  "image": "coldrink.png",
+  "category":"coldrinks",
+  "price": "30",
+  "mrp":"60",
+  "description":"Description of this Product is not available yet.",
+  "size": "500ml"
 },{
   "_id": {
     "$oid": "5eee6692a27a66807cf2bea4"
   },
-  "name": "Carbonara",
-  "image": "pizza.png",
-  "price": "200",
-  "size": "small"
+  "name": "CocaCola",
+  "image": "coldrink.png",
+  "category":"coldrinks",
+  "price": "100",
+  "mrp":"",
+  "description":"Description of this Product is not available yet.",
+  "size": "2 Litre"
 },{
   "_id": {
     "$oid": "5eee66a5a27a66807cf2bea5"
   },
   "name": "Americana",
   "image": "pizza.png",
+  "category":"beverages",
   "price": "500",
+  "mrp":"",
+  "description":"Description of this Product is not available yet.",
   "size": "large"
 },{
   "_id": {
     "$oid": "5eee66c4a27a66807cf2bea6"
   },
-  "name": "Chicken Mushroom",
-  "image": "pizza.png",
+  "name": "KajuKatli",
+  "image": "sweet.png",
+  "category":"beverages",
   "price": "350",
-  "size": "medium"
+  "mrp":"",
+  "description":"Description of this Product is not available yet.",
+  "size": "500gm"
 },{
   "_id": {
     "$oid": "5eee66cfa27a66807cf2bea7"
   },
   "name": "Paneer pizza",
   "image": "pizza.png",
-  "price": "200",
+  "category":"beverages",
+  "price": "150",
+  "mrp":"200",
+  "description":"Description of this Product is not available yet.",
   "size": "small"
 },{
   "_id": {
@@ -52,14 +70,64 @@
   },
   "name": "Vegies pizza",
   "image": "pizza.png",
+  "category":"beverages",
   "price": "600",
+  "mrp":"",
+  "description":"Description of this Product is not available yet.",
   "size": "large"
 },{
   "_id": {
     "$oid": "5eee6717a27a66807cf2bea9"
   },
+  "name": "Sprite",
+  "image": "coldrink.png",
+  "category":"coldrinks",
+  "price": "110",
+  "mrp":"",
+  "description":"Description of this Product is not available yet.",
+  "size": "2 Litre"
+},{
+  "_id": {
+    "$oid": "5eee66fde27a66807cf2bea8"
+  },
+  "name": "SonPapdi",
+  "image": "sweet.png",
+  "category":"beverages",
+  "price": "240",
+  "mrp":"350",
+  "description":"Description of this Product is not available yet.",
+  "size": "1.25 KG"
+},{
+  "_id": {
+    "$oid": "5eee6717a58b66807cf2bea9"
+  },
   "name": "Pepperoni",
   "image": "pizza.png",
+  "category":"beverages",
   "price": "500",
+  "mrp":"",
+  "description":"Description of this Product is not available yet.",
   "size": "medium"
+},{
+  "_id": {
+    "$oid": "5eee66eea27a77907cf2bea8"
+  },
+  "name": "Vegies pizza",
+  "image": "pizza.png",
+  "category":"beverages",
+  "price": "400",
+  "mrp":"600",
+  "description":"Description of this Product is not available yet.",
+  "size": "large"
+},{
+  "_id": {
+    "$oid": "5eee6717a27a66858df2bea9"
+  },
+  "name": "Samosa",
+  "image": "pizza.png",
+  "category":"beverages",
+  "price": "75",
+  "mrp":"110",
+  "description":"Description of this Product is not available yet.",
+  "size": "Full Plate"
 }]

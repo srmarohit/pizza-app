@@ -28,7 +28,213 @@ body{
     }
 }
 
+.social-icon-fb{
+    color: #4453df;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: $smooth;
+
+    &:hover{
+        background-color: #4453df ;
+        border-radius: 50%;
+        color: $pure;
+    }
+}
+
+.social-icon-insta{
+    color: #d14266;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: $smooth;
+
+    &:hover{
+        background-color: #81224a ;
+        border-radius: 50%;
+        color: $pure;
+    }
+}
+
+.social-icon-google{
+    color: #af2930d0;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: $smooth;
+
+    &:hover{
+        background-color: #ad1919 ;
+        border-radius: 50%;
+        color: $pure;
+    }
+}
+
+.text-muted{
+    color : $gray;
+    font-size: 10px;
+    font-weight: 200;
+}
+
+//Design Mobile-nav
+.main-wrapper{
+    position: relative;
+    height:100vh;
+    width: 100%;
+    overflow-x:hidden;
+}
+
+ .nav-background{
+    position: absolute;
+    width: 100%;
+    top:0;
+    left:0;
+    padding: 0;
+    background: $secondary;
+    z-index: 1;
+}
+
+.display{
+    display: none;
+}
+
+.main-wrapper .site-content-wrapper{
+    position: absolute;
+    width:100%;
+    z-index: 2;
+    background: $pure;
+    transition: $smooth;
+}
+
+.site-content-wrapper.scaled{
+    transform: scale(0.9) translateX(90%);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px 0 $secondary;
+}
+
+.nav-trigger{
+    position: absolute;
+    top:0;
+    left:0;
+    padding: 10px;
+    z-index: 1;
+    display: none;
+
+    @media (max-width:768px) {
+        display: block;
+    }
+}
+
+.nav-trigger svg{
+    height:40px;
+    width: 40px;
+  transform: rotate(90deg) scaleX(-1);
+}
+
+/* Mobile Navigation menu Styling */
+.nav-background .mobile-logo{
+    padding:1rem;
+}
+
+.nav-background .mobile-nav .cart{
+    display:flex;
+    text-align:left;
+    align-items:center;
+    padding:0.75rem;
+    margin-bottom:1.5rem;
+    background: $dark;
+
+    &.hover{
+        background: $primary;
+        color: $secondary;
+    }
+}
+
+.nav-background .mobile-nav .cart img{
+    width:20px;
+    height:20px;
+    margin-right:0.55rem;
+}
+
+.nav-background .mobile-nav .cart a {
+    font-weight: 900;
+    font-size:1rem;
+    text-decoration:none;
+    color:$dark;
+}
+
+.nav-background .mobile-nav .nav-top ul{
+    list-style-type:none;
+    padding:0.75rem;
+    margin-bottom:1rem;
+}
+
+.nav-background .mobile-nav .nav-top ul li {
+      margin-bottom:0.40rem;
+}
+
+.nav-background .mobile-nav .nav-top ul li a{
+    text-decoration:none;
+    color:$primary;
+    font-size:1rem;
+    &.hover{
+        color:$primary
+    }
+}
+
+
+.nav-background .mobile-nav .contact, .nav-background .mobile-nav .time{
+    padding: 0.75rem;
+    padding-bottom:0.5rem;
+    display:flex;
+    text-align:center;
+}
+
+.nav-background .mobile-nav .contact img, .nav-background .mobile-nav .time img{
+    margin-right:0.75rem;
+}
+
+.nav-background .mobile-nav .contact h5, .nav-background .mobile-nav .time h5 {
+    margin-bottom:0.15rem;
+    text-align:left;
+}
+
+.nav-background .mobile-nav .contact h6, .nav-background .mobile-nav .time h6{
+    text-align:left;
+}
+
+
+
+// Shadow Design
+.magic-shadow-sm {
+    position: relative;
+    background: $gray;
+}
+
+    .magic-shadow-sm:after {
+        content: '';
+        width: 100%;
+        display: block;
+        height: 70px;
+        position: absolute;
+        background-image: url('/img/shadow-sm.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -22px;
+        z-index: -1;
+    }
+
+
+
 // Design Nav
+
+.site-content-wrapper nav{
+    @media (max-width:768px) {
+        display: none;
+    }
+}
 
 nav li:last-child a{
     transition: $smooth;
@@ -73,14 +279,272 @@ section.hero{
     }
 }
 
+
+// Desgin Top-products Section
+section.top-products {
+    background: $secondary;
+}
+
+section.top-products .food-slider .food-card{
+    background-color:$pure;
+    padding:1.5rem 0;
+    border-radius:15px;
+    box-shadow: 5px 10px 15px $gray;
+}
+
+section.top-products .food-slider .food-card .product-img img{
+    width:80%;
+    height:200px;
+    object-fit:contain;
+    padding-bottom:1rem;
+}
+
+section.top-products .food-slider .food-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+
+
+section.top-products .food-slider .food-card .price {
+    color: $primary;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+section.top-products .food-slider .food-card button {
+    border:2px solid $dark;
+    border-radius:4px;
+    width:50%;
+    cursor:pointer;
+    color:$primary;
+    background-color:$pure;
+    margin-bottom:0.25rem;
+    transition: $smooth;
+}
+
+section.top-products .food-slider .food-card button:hover{
+    background-color:$primary;
+    color:$pure;
+}
+
+section.top-products .food-slider .food-card button span{
+    font-size:1rem;
+    text-align:center;
+}
+
+section.top-products .food-slider .food-card button img {
+        padding: 0.5rem;
+        background-color: $primary;
+        height: 32px;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+        margin-right:1.2rem;
+}
+
+/* Styling Slick Carousel */
+  
+    .slick-slide{
+        margin:0 27px ;
+    }
+
+    .slick-list{
+        margin:0 -27px;
+    }
+
+    .slick-track{
+        padding: 1rem 0 ;
+    }
+
+/* section top products styling */
+
+section.top-products .slider{
+    position:relative;
+}
+
+    section.top-products .slider .slider-btn {
+        width: 30px;
+        height: 32px;
+        border: none;
+        background: $primary;
+        border-radius: 4px;
+        cursor:pointer;
+        outline: none;
+    }
+
+ section.top-products .slider .prev-btn {
+        position: absolute;
+        top: 46%;
+        left:-3rem;
+        z-index:1;
+        @media (max-width:768px) {
+            display: none;
+        }
+    }
+
+section.top-products .slider .next-btn {
+        position: absolute;
+        top: 46%;
+        right:-3rem;
+        z-index:1;
+        @media (max-width:768px) {
+            display: none;
+        }
+ }
+
+section.top-products .btn-wrapper{
+    margin-top:2rem;
+}
+
+
+/* Subsribe Section Styling */
+
+section.subscribe{
+    background-color:$dark;
+}
+
+section.subscribe .container div:first-child{
+    flex:1;
+}
+
+section.subscribe .container div:last-child {
+    flex: 1;
+} 
+
+section.subscribe .container img{
+    width:60%;
+}
+
+section.subscribe .container h2{  
+    font-size:1.5rem;
+    margin-bottom:1.2rem;
+}
+
+section.subscribe .container p {
+        font-size: 1.2rem;
+        margin-bottom: 1.2rem;
+        line-height:1.6;
+        margin-bottom:2rem;
+}
+
+
+section.subscribe button{
+    font-size:1rem;
+    background-color:$primary;
+    color:$pure;
+    border:none;
+    border-radius:4px;
+    padding:0.5rem 1rem;
+    outline:none;
+    transition: all .3s ease;
+}
+
+section.subscribe  button:hover{
+    background-color:$primary-hover;
+    color:$pure;
+}
+
+/*  Contact-Us Styling */
+
+section.contact {
+    padding:0px 0px;
+    @media (max-width:768px) {
+        flex-direction:column;
+        margin-bottom:2rem;
+    }
+}
+
+section.contact .contact-wrapper{
+    flex:1;
+    padding:1.5rem 0 ;
+} 
+
+section.contact .contact-info > div > div{
+    display:flex;
+    align-items:center;
+    margin-bottom:2rem;
+}
+
+section.contact .contact-info > div > div > div {
+        display: flex;
+        flex-direction:column;
+} 
+
+section.contact .contact-info img{
+    margin-right:1rem;
+}
+
+section.contact .contact-info > div > div > div span:first-child {
+        
+        font-size:1rem;
+        margin-bottom:0.2rem;
+}
+
+section.contact .contact-info > div > div > div span:last-child {
+        font-family: raleway-regular;
+        font-size: 1rem;
+} 
+
+
+section.contact .map{
+    flex:1;
+}
+
+
+
 //Design empty-cart section
 
 section.cart{
     background: $secondary;
+
+    .trash-item{
+        color:red;
+        padding : 0.05rem 0.25rem;
+        border : 2px solid red;
+        border-radius: 1rem;
+        font-size:1.5rem;
+        transition: $smooth;
+        margin-left:2rem;
+        cursor: pointer;
+    
+      &:hover{
+          background-color: $primary;
+          color: white;
+      }
+    }
+
+    .increment, .decrement{
+        cursor: pointer;
+        transition: $smooth;
+    
+      &:hover{
+          transform: translateY(15deg);
+      }
+    }
     
     .amount{
         color: $primary;
     }
+
+  @media screen and (max-width:500px){
+      .pizza-list>div{
+          display: block;
+          text-align: center;
+          box-shadow: 5px 7px 10px gray;
+          border-radius: 1rem;
+          padding:1rem;
+      }
+
+      .pizza-list div img{
+        margin: 1rem auto;
+    }
+
+    .pizza-list div div{
+        margin-bottom: 1rem;
+        justify-content: center;
+    }
+      
+  }  
 }
 
 
@@ -285,3 +749,71 @@ section.status{
   .StripeElement--webkit-autofill {
     background-color: #fefde5 !important;
   }
+
+
+  // Footer Styling 
+  footer .footer-wrapper{
+    @media(min-width: 768px){
+        div:first-child{
+           display: none;
+       }
+       div {
+           margin-left: 80px;
+       }
+   }
+        @media(min-width: 992px){
+            
+            div {
+                margin-left: 170px;
+            }
+        }
+
+        @media(max-width:900px){
+            overflow-x: hidden;
+        }
+  }
+
+  footer ul li{
+      font-size: 14px;
+      margin-bottom: 0.8rem;
+  }
+
+  footer ul li img{
+      object-fit: contain;
+      box-shadow: 5px 5px 5px rgba(0,0,255,0.2);
+  }
+
+  footer a:hover{
+        transition: $smooth;
+        color: $primary;
+  }
+
+  footer .copywright {
+      background: $secondary;
+       @media (max-width:650px) {
+           padding: 2rem 0 ;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+        }
+      }
+
+      footer .copywright div{
+        @media (max-width:650px) {
+            margin-bottom: 0.8rem;
+        }
+      }
+
+   footer .copywright ul{
+        transform:translateY(10px);
+   }   
+
+   .copywright ul li{
+       margin-right:0.8rem;
+   }
+
+
+
+   
+
+  

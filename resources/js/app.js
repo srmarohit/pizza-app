@@ -3,6 +3,7 @@ import axios from 'axios'
 import Noty from 'noty'
 // import axios from 'axios'
 import moment from 'moment'
+import mobNav from './mobNav'
 
 
  import initAdmin  from './admin.js'
@@ -37,15 +38,101 @@ import moment from 'moment'
  }
 
  addCart.forEach(cart => {
-    cart.addEventListener('click', (e)=>{
-         // console.log(cart.dataset.pizza)
-         let pizza = JSON.parse(cart.dataset.pizza);
-         // call updateCart(pizza) for updating cart 
+   cart.addEventListener('click', (e)=>{
+        // console.log(cart.dataset.pizza)
+        let pizza = JSON.parse(cart.dataset.pizza);
+        // call updateCart(pizza) for updating cart 
 
-         updateCart(pizza);
-    })
- })
+        updateCart(pizza);
+   })
+})
 
+
+ //create removeCartItem()
+ let removeItem = document.querySelectorAll(".trash-item");
+
+  function removeCartItem(pizza_id){
+   axios.post('/remove-cart-item', {pizza_id}).then(res => {
+       //console.log(res) 
+       cartCounter.innerText = res.data.totalQty ; //instad this we fetch data from session
+
+       // show notification 
+       new Noty({
+          type:'success',
+          text : "Items successfully Deleted !",
+          timeout : 1000,
+          progressBar:false
+       }).show()
+
+    location.reload()
+   
+   }).catch(err => {
+      // show error Notification
+      new Noty({
+        type:'error',
+        text : "Something went Wrong !",
+        timeout : 1000,
+        progressBar:false
+     }).show()
+   })
+}
+
+removeItem.forEach(item => {
+   item.addEventListener('click', (e)=>{
+         console.log(item.dataset.pizzaid)
+        let id = item.dataset.pizzaid;
+        // call updateitem(pizza) for updating item 
+        removeCartItem(id)
+   })
+})
+
+// Increment cart
+let increment = document.querySelectorAll(".increment")
+let decrement = document.querySelectorAll(".decrement")
+let qty = document.querySelectorAll(".qty")
+let price = document.querySelectorAll(".price")
+let amount = document.querySelector(".amount")
+
+increment.forEach((inc,i) => {
+   inc.addEventListener("click", (e)=>{
+      axios.post('/update-qty', {changeType : "increment", pizza_id : inc.dataset.pizzaid}).then(res => {
+         cartCounter.innerText = res.data.totalQty ; //instad this we fetch data from session
+         qty[i].innerText = res.data.pizza_qty+" Pcs" ;
+         price[i].innerText = "$"+res.data.pizza_price ;
+         amount.innerText = "$"+res.data.totalPrice;
+      }).catch(err => {
+         // show error Notification
+         new Noty({
+           type:'error',
+           text : "Something went Wrong !",
+           timeout : 1000,
+           progressBar:false
+        }).show()
+      })
+   })   
+})
+
+decrement.forEach((dec,i) => {
+   dec.addEventListener("click", (e)=>{
+      axios.post('/update-qty', {changeType : "decrement", pizza_id : dec.dataset.pizzaid}).then(res => {
+         cartCounter.innerText = res.data.totalQty ; //instad this we fetch data from session
+         qty[i].innerText = res.data.pizza_qty+" Pcs" ;
+         price[i].innerText = "$"+res.data.pizza_price ;
+         amount.innerText = "$"+res.data.totalPrice;
+      }).catch(err => {
+         // show error Notification
+         new Noty({
+           type:'error',
+           text : "Something went Wrong !",
+           timeout : 1000,
+           progressBar:false
+        }).show()
+      })
+   })   
+})
+
+
+ 
  // code for remove order alert message after 2 sec
  const alertMsg = document.getElementById('success-alert');
  if(alertMsg){
@@ -97,6 +184,8 @@ import moment from 'moment'
             }
      })
  }
+
+ mobNav(); 
 
  updateStatus(order);
 

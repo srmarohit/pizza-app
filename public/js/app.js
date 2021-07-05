@@ -2135,8 +2135,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _admin_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./admin.js */ "./resources/js/admin.js");
-/* harmony import */ var _stripe_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stripe.js */ "./resources/js/stripe.js");
+/* harmony import */ var _mobNav__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mobNav */ "./resources/js/mobNav.js");
+/* harmony import */ var _admin_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./admin.js */ "./resources/js/admin.js");
+/* harmony import */ var _stripe_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stripe.js */ "./resources/js/stripe.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2145,6 +2146,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
  // import axios from 'axios'
+
 
 
 
@@ -2183,6 +2185,93 @@ addCart.forEach(function (cart) {
     var pizza = JSON.parse(cart.dataset.pizza); // call updateCart(pizza) for updating cart 
 
     updateCart(pizza);
+  });
+}); //create removeCartItem()
+
+var removeItem = document.querySelectorAll(".trash-item");
+
+function removeCartItem(pizza_id) {
+  axios__WEBPACK_IMPORTED_MODULE_0___default().post('/remove-cart-item', {
+    pizza_id: pizza_id
+  }).then(function (res) {
+    //console.log(res) 
+    cartCounter.innerText = res.data.totalQty; //instad this we fetch data from session
+    // show notification 
+
+    new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+      type: 'success',
+      text: "Items successfully Deleted !",
+      timeout: 1000,
+      progressBar: false
+    }).show();
+    location.reload();
+  })["catch"](function (err) {
+    // show error Notification
+    new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+      type: 'error',
+      text: "Something went Wrong !",
+      timeout: 1000,
+      progressBar: false
+    }).show();
+  });
+}
+
+removeItem.forEach(function (item) {
+  item.addEventListener('click', function (e) {
+    console.log(item.dataset.pizzaid);
+    var id = item.dataset.pizzaid; // call updateitem(pizza) for updating item 
+
+    removeCartItem(id);
+  });
+}); // Increment cart
+
+var increment = document.querySelectorAll(".increment");
+var decrement = document.querySelectorAll(".decrement");
+var qty = document.querySelectorAll(".qty");
+var price = document.querySelectorAll(".price");
+var amount = document.querySelector(".amount");
+increment.forEach(function (inc, i) {
+  inc.addEventListener("click", function (e) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default().post('/update-qty', {
+      changeType: "increment",
+      pizza_id: inc.dataset.pizzaid
+    }).then(function (res) {
+      cartCounter.innerText = res.data.totalQty; //instad this we fetch data from session
+
+      qty[i].innerText = res.data.pizza_qty + " Pcs";
+      price[i].innerText = "$" + res.data.pizza_price;
+      amount.innerText = "$" + res.data.totalPrice;
+    })["catch"](function (err) {
+      // show error Notification
+      new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+        type: 'error',
+        text: "Something went Wrong !",
+        timeout: 1000,
+        progressBar: false
+      }).show();
+    });
+  });
+});
+decrement.forEach(function (dec, i) {
+  dec.addEventListener("click", function (e) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default().post('/update-qty', {
+      changeType: "decrement",
+      pizza_id: dec.dataset.pizzaid
+    }).then(function (res) {
+      cartCounter.innerText = res.data.totalQty; //instad this we fetch data from session
+
+      qty[i].innerText = res.data.pizza_qty + " Pcs";
+      price[i].innerText = "$" + res.data.pizza_price;
+      amount.innerText = "$" + res.data.totalPrice;
+    })["catch"](function (err) {
+      // show error Notification
+      new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+        type: 'error',
+        text: "Something went Wrong !",
+        timeout: 1000,
+        progressBar: false
+      }).show();
+    });
   });
 }); // code for remove order alert message after 2 sec
 
@@ -2235,8 +2324,9 @@ function updateStatus(order) {
   });
 }
 
+(0,_mobNav__WEBPACK_IMPORTED_MODULE_3__.default)();
 updateStatus(order);
-(0,_stripe_js__WEBPACK_IMPORTED_MODULE_4__.default)(); // CLient side Scoeket Initialization
+(0,_stripe_js__WEBPACK_IMPORTED_MODULE_5__.default)(); // CLient side Scoeket Initialization
 
 var socket = io();
 var adminPath = window.location.pathname; // provide path name of page
@@ -2246,7 +2336,7 @@ if (adminPath.includes('admin')) {
   // if url includes admin it means this is admin site
   // call initAdmin()
   // Admin related client js code execute when admin related page loads
-  (0,_admin_js__WEBPACK_IMPORTED_MODULE_3__.default)(socket); // create Room for admin order Controller 
+  (0,_admin_js__WEBPACK_IMPORTED_MODULE_4__.default)(socket); // create Room for admin order Controller 
 
   socket.emit('join', 'adminRoom'); // set only one room for admin
 } // emit to join for new connection 
@@ -2396,6 +2486,50 @@ var CardWidget = /*#__PURE__*/function () {
 
   return CardWidget;
 }();
+
+/***/ }),
+
+/***/ "./resources/js/mobNav.js":
+/*!********************************!*\
+  !*** ./resources/js/mobNav.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ mobNav)
+/* harmony export */ });
+function mobNav() {
+  // JavaScript source code
+  $(document).ready(function () {
+    $('.food-slider').slick({
+      autoplay: true,
+      slidesToShow: 3,
+      // If you max no. of alides use to show then automatically pre and next btn disabled . no auto play.
+      slidesToScroll: 1,
+      prevArrow: '.prev-btn',
+      nextArrow: '.next-btn',
+      responsive: [{
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2
+        }
+      }, {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1
+        }
+      }]
+    });
+    /* Apply scaled class to nav trigger to show mobile nav menu. */
+
+    $('.nav-trigger').click(function () {
+      $('.nav-background').toggleClass('display');
+      $('.site-content-wrapper').toggleClass('scaled');
+    });
+  });
+}
 
 /***/ }),
 

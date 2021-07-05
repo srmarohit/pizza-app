@@ -1,0 +1,41 @@
+              
+              
+              <!-- Section starts from here -->
+                <section class="top-products py-4">
+                    <div class="container mx-auto">
+                        <h1 class="text-xl font-bold mb-8">Popular</h1>
+                        <div class="slider">
+                            <button class="slider-btn  prev-btn"><img src="/img/pre.svg" class="mx-auto" alt="pre btn" /></button>
+                            <button class="slider-btn  next-btn"><img src="/img/next.svg" class="mx-auto" alt="next btn" /></button>
+                            <div class="food-slider">
+                                <% pizzas.forEach(pizza => { 
+                                     if(pizza.mrp){
+                                 %>        
+                                <div class="food-card magic-shadow-sm">
+                                    <div class="product-img flex justify-center align-center">
+                                        <img src="/img/<%= pizza.image %>" alt="plate-1" />
+                                    </div>
+                                    <hr />
+                                    <div>
+                                        <h2 class="text-center"><%= pizza.name %></h2>
+                                        <div class="text-dark text-sm text-center"><%= pizza.size %></div>
+                                        <div class="text-dark text-sm mb-2 text-center"><del><%= '$'+pizza.mrp %></del></div>
+                                        <div class="price text-center">$<%= pizza.price %></div>
+                                        <div class="flex justify-center">
+                                            <button data-pizza = "<%= JSON.stringify(pizza) %>" class="add-to-cart flex align-center">
+                                                <img src="/img/cart-2.svg" alt="cart-2" />
+                                                <span>Add to Cart</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <% }
+                              }) %>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+               

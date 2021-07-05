@@ -2,7 +2,6 @@
 // and display to admin orders page.
 
 const Order = require("../../../models/order");
-const moment = require('moment');
 
 const orderController = () =>{
 

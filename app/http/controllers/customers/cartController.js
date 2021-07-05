@@ -7,6 +7,7 @@
         cart : (req,res) => {
             res.render('customers/cart')
         },
+
         update : (req,res) => {
             // Structure cart if first time request
             if(!req.session.cart){
@@ -50,6 +51,73 @@
 
 
             return res.send({totalQty : req.session.cart.totalQty})
+        },
+
+        updateQty : (req,res)=>{
+            // console.log(req.body.changeType)
+            let cart = req.session.cart ;
+            let pizza = cart.items[req.body.pizza_id] ;
+            let price = pizza.item.price;
+
+            if(req.body.changeType === "increment"){
+                pizza.qty = pizza.qty + 1 ;
+                cart.totalQty = cart.totalQty + 1 ;
+
+                price = pizza.qty * pizza.item.price ;
+                cart.totalPrice = cart.totalPrice + pizza.item.price ;
+                
+               // console.log(pizza.qty)
+               // console.log(cart.totalQty)
+               // console.log(cart.totalPrice)
+               // console.log(price)
+
+                const updateItem = {
+                    pizza_qty : pizza.qty,
+                    totalQty : cart.totalQty,
+                    totalPrice : cart.totalPrice,
+                    pizza_price : price
+                } ;
+
+                return res.send(updateItem) ;
+            }else{
+
+                if(pizza.qty > 1){
+                    pizza.qty = pizza.qty - 1 ;
+                    cart.totalQty = cart.totalQty - 1 ;
+    
+                    price = pizza.qty * pizza.item.price ;
+                    cart.totalPrice = cart.totalPrice - pizza.item.price ;      
+                }
+                
+              //  console.log(pizza.qty)
+              //  console.log(cart.totalQty)
+              //  console.log(cart.totalPrice)
+              //  console.log(price)
+
+                const updateItem = {
+                    pizza_qty : pizza.qty,
+                    totalQty : cart.totalQty,
+                    totalPrice : cart.totalPrice,
+                    pizza_price : price
+                } ;
+
+                return res.send(updateItem) ;
+            }
+        },
+
+        removeItem : (req,res) => {
+            //console.log("data: ",req.body)
+             // store req.session.cart to variable cart
+             let cart = req.session.cart ;
+             let pizza = cart.items[req.body.pizza_id];
+             //console.log(cart.items[req.body.pizza_id])
+
+             cart.totalQty -= pizza.qty ;
+             cart.totalPrice -= pizza.item.price *  pizza.qty;
+             delete cart.items[req.body.pizza_id];
+
+             return res.send({totalQty : req.session.cart.totalQty})
+
         }
     }
 }

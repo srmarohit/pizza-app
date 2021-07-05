@@ -11,14 +11,21 @@ const adminOrderController = require("../../app/http/controllers/admin/orderCont
 const admin = require("../../app/http/middlewares/admin");
 const statusController = require("../../app/http/controllers/admin/statusController");
 const singleOrderStatus = require("../../app/http/controllers/customers/singleOrderStatus");
+const menuController = require("../../app/http/controllers/menuController");
 
 const initRoute = (app) => {
   // app is an express object that passing from server.js
   app.get("/", homeController().index);
 
+  // for /menus menus.ejs page
+  app.get("/menus", menuController().products) ;
+
   // cart get method
   app.get("/cart", cartController().cart);
   app.post('/update-cart', cartController().update);
+  app.post('/remove-cart-item', cartController().removeItem)
+  app.post('/update-qty', cartController().updateQty)
+
 
   // auth get method
   app.get("/register", guest, authController().register);
@@ -28,6 +35,16 @@ const initRoute = (app) => {
   app.get("/login", guest, authController().login);
   app.post("/login", authController().postLogin);
 
+  app.get("/auth/facebook", authController().facebookLogin);
+  app.get("/auth/facebook/done", authController().facebookLoginCallback)
+
+  app.get("/auth/instagram", authController().instagramLogin)
+  app.get("/auth/instagram/done", authController().instagramLoginCallback)
+
+  
+  app.get("/auth/google", authController().googleLogin)
+  app.get("/auth/google/done", authController().googleLoginCallback)
+
   //loogut
   app.post("/logout", authController().logout);
 
@@ -36,6 +53,7 @@ const initRoute = (app) => {
 
   app.post('/orders', auth,  orderController().store )
   app.get('/customer/orders', auth, orderController().index)
+  app.get('/customer/order/:id', auth, singleOrderStatus().orderDetail)
   app.get('/customer/order/status/:id', auth, singleOrderStatus().status)
 
   //Admin ROutes
